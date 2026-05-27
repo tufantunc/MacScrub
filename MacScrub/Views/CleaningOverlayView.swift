@@ -17,16 +17,16 @@ struct CleaningOverlayView: View {
                             value: breathing
                         )
 
-                    Text("Cleaning Mode Active")
+                    Text(String(localized: "overlay.title", defaultValue: "Cleaning Mode Active"))
                         .font(.system(size: 22, weight: .semibold, design: .default))
                         .foregroundStyle(.white)
 
-                    Text("Keyboard and trackpad are locked.")
+                    Text(String(localized: "overlay.locked", defaultValue: "Keyboard and trackpad are locked."))
                         .font(.system(size: 13))
                         .foregroundStyle(.white.opacity(0.55))
                         .padding(.bottom, 8)
 
-                    Text("Hold all modifiers to exit")
+                    Text(String(localized: "overlay.hold_to_exit", defaultValue: "Hold all modifiers to exit"))
                         .font(.system(size: 11))
                         .foregroundStyle(.white.opacity(0.35))
 
@@ -54,7 +54,7 @@ struct CleaningOverlayView: View {
                     let pressed = manager.modifierDetector.pressedKeys.intersection(requiredKeys).count
                     let total = requiredKeys.count
 
-                    Text("\(pressed) of \(total) keys held")
+                    Text(String(localized: "\(pressed) of \(total) keys held"))
                         .font(.system(size: 10))
                         .foregroundStyle(.white.opacity(0.35))
                         .padding(.bottom, 4)

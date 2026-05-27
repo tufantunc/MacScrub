@@ -13,7 +13,7 @@ struct MenuBarView: View {
                 Button {
                     manager.deactivate()
                 } label: {
-                    Label("Stop Cleaning Mode", systemImage: "stop.circle")
+                    Label(String(localized: "menu.stop_cleaning", defaultValue: "Stop Cleaning Mode"), systemImage: "stop.circle")
                 }
             } else {
                 Text("🧼 MacScrub")
@@ -27,7 +27,7 @@ struct MenuBarView: View {
                         PermissionGuideView.showIfNeeded()
                     }
                 } label: {
-                    Label("Start Cleaning Mode", systemImage: "play.circle")
+                    Label(String(localized: "menu.start_cleaning", defaultValue: "Start Cleaning Mode"), systemImage: "play.circle")
                 }
             }
 
@@ -36,11 +36,11 @@ struct MenuBarView: View {
                 NSApp.activate(ignoringOtherApps: true)
                 NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
             } label: {
-                Label("Settings...", systemImage: "gearshape")
+                Label(String(localized: "menu.settings", defaultValue: "Settings..."), systemImage: "gearshape")
             }
 
             Divider()
-            Button("Quit MacScrub") {
+            Button(String(localized: "menu.quit", defaultValue: "Quit MacScrub")) {
                 NSApplication.shared.terminate(nil)
             }
             .keyboardShortcut("q", modifiers: .command)

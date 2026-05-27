@@ -5,31 +5,31 @@ struct SettingsView: View {
 
     var body: some View {
         Form {
-            Section("Exit Keys") {
+            Section(String(localized: "settings.exit_keys", defaultValue: "Exit Keys")) {
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("Hold these modifier keys to exit cleaning mode:")
+                    Text(String(localized: "settings.hold_modifiers_description", defaultValue: "Hold these modifier keys to exit cleaning mode:"))
                         .font(.caption)
                         .foregroundStyle(.secondary)
 
                     HStack(spacing: 12) {
-                        Toggle("⌘ Command", isOn: modifierBinding(.command))
+                        Toggle(String(localized: "settings.command", defaultValue: "⌘ Command"), isOn: modifierBinding(.command))
                             .toggleStyle(.checkbox)
-                        Toggle("⌥ Option", isOn: modifierBinding(.option))
+                        Toggle(String(localized: "settings.option", defaultValue: "⌥ Option"), isOn: modifierBinding(.option))
                             .toggleStyle(.checkbox)
-                        Toggle("⌃ Control", isOn: modifierBinding(.control))
+                        Toggle(String(localized: "settings.control", defaultValue: "⌃ Control"), isOn: modifierBinding(.control))
                             .toggleStyle(.checkbox)
-                        Toggle("⇧ Shift", isOn: modifierBinding(.shift))
+                        Toggle(String(localized: "settings.shift", defaultValue: "⇧ Shift"), isOn: modifierBinding(.shift))
                             .toggleStyle(.checkbox)
                     }
                 }
             }
 
-            Section("Timeout") {
+            Section(String(localized: "settings.timeout", defaultValue: "Timeout")) {
                 VStack(alignment: .leading, spacing: 4) {
                     HStack {
-                        Text("Auto-exit after:")
+                        Text(String(localized: "settings.auto_exit_after", defaultValue: "Auto-exit after:"))
                         Spacer()
-                        Text("\(settings.timeoutDuration) seconds")
+                        Text(String(localized: "\(settings.timeoutDuration) seconds"))
                             .foregroundStyle(.secondary)
                     }
                     Slider(value: Binding(
@@ -39,8 +39,8 @@ struct SettingsView: View {
                 }
             }
 
-            Section("Lid") {
-                Toggle("Exit cleaning mode when lid is opened", isOn: $settings.exitOnLidOpen)
+            Section(String(localized: "settings.lid", defaultValue: "Lid")) {
+                Toggle(String(localized: "settings.exit_on_lid_open", defaultValue: "Exit cleaning mode when lid is opened"), isOn: $settings.exitOnLidOpen)
             }
         }
         .formStyle(.grouped)
