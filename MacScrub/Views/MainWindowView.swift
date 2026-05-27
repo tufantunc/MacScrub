@@ -9,15 +9,8 @@ struct MainWindowView: View {
     @State private var showRestartAlert = false
 
     var body: some View {
-        Group {
-            if manager.isActive {
-                ActiveStatusView(manager: manager)
-            } else {
-                idleView
-            }
-        }
+        idleView
         .frame(width: 360)
-        .animation(.spring(response: 0.4, dampingFraction: 0.85), value: manager.isActive)
         .alert(
             String(localized: "language.restart_title", defaultValue: "Restart Required"),
             isPresented: $showRestartAlert
@@ -184,56 +177,5 @@ struct MainWindowView: View {
     private func showAbout() {
         NSApplication.shared.orderFrontStandardAboutPanel(nil)
         NSApp.activate(ignoringOtherApps: true)
-    }
-}
-
-private struct ActiveStatusView: View {
-    var manager: CleaningModeManager
-
-    var body: some View {
-        VStack(spacing: 14) {
-            Image(systemName: "lock.fill")
-                .font(.system(size: 30))
-                .foregroundStyle(.tint)
-                .padding(20)
-                .background(Circle().strokeBorder(.tint.opacity(0.35), lineWidth: 3))
-
-            Text(String(localized: "overlay.title", defaultValue: "Cleaning Mode Active"))
-                .font(.system(size: 18, weight: .bold))
-            Text(String(localized: "overlay.locked", defaultValue: "Keyboard and trackpad are locked."))
-                .font(.system(size: 13))
-                .foregroundStyle(.secondary)
-
-            HStack(spacing: 8) {
-                indicator("⌘", .command)
-                indicator("⌥", .option)
-                indicator("⌃", .control)
-                indicator("⇧", .shift)
-            }
-            .padding(.top, 6)
-
-            Text(String(localized: "overlay.hold_to_exit", defaultValue: "Hold all modifiers to exit"))
-                .font(.system(size: 11))
-                .foregroundStyle(.tertiary)
-
-            Button(String(localized: "menu.stop_cleaning", defaultValue: "Stop Cleaning Mode")) {
-                manager.deactivate()
-            }
-            .controlSize(.large)
-            .padding(.top, 4)
-        }
-        .padding(.vertical, 36)
-        .padding(.horizontal, 26)
-        .frame(maxWidth: .infinity)
-    }
-
-    private func indicator(_ symbol: String, _ key: ModifierKeyFlags) -> some View {
-        let pressed = manager.modifierDetector.pressedKeys.contains(key)
-        return Text(symbol)
-            .font(.system(size: 14))
-            .frame(width: 30, height: 30)
-            .background(RoundedRectangle(cornerRadius: 7)
-                .fill(.tint.opacity(pressed ? 0.28 : 0.12)))
-            .foregroundStyle(pressed ? AnyShapeStyle(.tint) : AnyShapeStyle(.secondary))
     }
 }
