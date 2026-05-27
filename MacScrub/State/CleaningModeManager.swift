@@ -12,6 +12,7 @@ final class CleaningModeManager {
     private let lidMonitor: LidMonitor
     private var timeoutTask: Task<Void, Never>?
     private let exitSoundID: SystemSoundID = 1057
+    weak var overlayController: OverlayWindowController?
 
     init(settings: SettingsStore, eventBlocker: EventBlockerProtocol, lidMonitor: LidMonitor) {
         self.settings = settings
@@ -56,6 +57,7 @@ final class CleaningModeManager {
         }
 
         isActive = true
+        overlayController?.show(manager: self)
         startTimeout()
     }
 
@@ -66,6 +68,7 @@ final class CleaningModeManager {
         timeoutTask?.cancel()
         timeoutTask = nil
         isActive = false
+        overlayController?.hide()
         AudioServicesPlaySystemSound(exitSoundID)
     }
 

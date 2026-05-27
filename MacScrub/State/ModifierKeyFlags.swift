@@ -9,4 +9,8 @@ struct ModifierKeyFlags: OptionSet, Codable, Equatable {
     static let shift = ModifierKeyFlags(rawValue: CGEventFlags.maskShift.rawValue)
 
     static let defaultFlags: ModifierKeyFlags = [.command, .option, .control, .shift]
+
+    var count: Int {
+        rawValue.nonzeroBitCount
+    }
 }
