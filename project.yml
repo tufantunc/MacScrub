@@ -1,0 +1,42 @@
+name: MacScrub
+options:
+  bundleIdPrefix: com.macscrub
+  deploymentTarget:
+    macOS: "14.0"
+  xcodeVersion: "15.0"
+  createIntermediateGroups: true
+
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    MACOSX_DEPLOYMENT_TARGET: "14.0"
+
+targets:
+  MacScrub:
+    type: application
+    platform: macOS
+    sources:
+      - MacScrub
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.macscrub.app
+        INFOPLIST_FILE: MacScrub/App/Info.plist
+        CODE_SIGN_IDENTITY: "-"
+        CODE_SIGN_STYLE: Automatic
+        GENERATE_INFOPLIST_FILE: false
+        SWIFT_EMIT_LOC_STRINGS: "YES"
+    dependencies: []
+    info:
+      path: MacScrub/App/Info.plist
+
+  MacScrubTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - MacScrubTests
+    dependencies:
+      - target: MacScrub
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.macscrub.tests
+        CODE_SIGN_IDENTITY: "-"
