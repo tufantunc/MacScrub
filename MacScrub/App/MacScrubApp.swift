@@ -6,13 +6,13 @@ class OverlayWindowController {
 
     func show(manager: CleaningModeManager) {
         guard overlayWindow == nil else { return }
-        let screen = NSScreen.main!
+        guard let screen = NSScreen.main else { return }
         let window = NSWindow(
             contentRect: screen.frame,
             styleMask: [.borderless],
             backing: .buffered,
             defer: false,
-            screen: NSScreen.main
+            screen: screen
         )
         window.level = .statusBar + 1
         window.isOpaque = false
@@ -35,9 +35,9 @@ class OverlayWindowController {
 
 @main
 struct MacScrubApp: App {
-    @State private var settings = SettingsStore()
-    @State private var eventBlocker = EventBlocker()
-    @State private var lidMonitor = LidMonitor()
+    @State private var settings: SettingsStore
+    @State private var eventBlocker: EventBlocker
+    @State private var lidMonitor: LidMonitor
     @State private var manager: CleaningModeManager
     private let overlayController = OverlayWindowController()
 
@@ -57,20 +57,22 @@ struct MacScrubApp: App {
     }
 
     var body: some Scene {
-        MenuBarExtra {
-            MenuBarView(manager: manager)
+        Window("MacScrub", id: "main") {
+            MainWindowView(manager: manager, settings: settings)
                 .onAppear {
                     manager.overlayController = overlayController
+                    NSApp.activate(ignoringOtherApps: true)
                 }
+        }
+        .windowResizability(.contentSize)
+
+        MenuBarExtra {
+            MenuBarView(manager: manager)
         } label: {
             Image(systemName: "sparkles")
                 .symbolRenderingMode(.hierarchical)
                 .foregroundStyle(manager.isActive ? .blue : .secondary)
         }
-        .menuBarExtraStyle(.window)
-
-        Settings {
-            SettingsView(settings: settings)
-        }
+        .menuBarExtraStyle(.menu)
     }
 }
