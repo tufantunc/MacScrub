@@ -5,32 +5,59 @@ import SwiftUI
 final class SettingsStore {
     private let defaults: UserDefaults
 
-    init(defaults: UserDefaults = .standard) {
-        self.defaults = defaults
+    private enum Keys {
+        static let exitKeyModifiers = "exitKeyModifiers"
+        static let timeoutDuration = "timeoutDuration"
+        static let exitOnLidOpen = "exitOnLidOpen"
+        static let appLanguage = "appLanguage"
+        static let appleLanguages = "AppleLanguages"
     }
 
     var exitKeyModifiers: ModifierKeyFlags {
-        get {
-            if let data = defaults.data(forKey: "exitKeyModifiers"),
-               let flags = try? JSONDecoder().decode(ModifierKeyFlags.self, from: data) {
-                return flags
-            }
-            return .defaultFlags
-        }
-        set {
-            if let data = try? JSONEncoder().encode(newValue) {
-                defaults.set(data, forKey: "exitKeyModifiers")
+        didSet {
+            if let data = try? JSONEncoder().encode(exitKeyModifiers) {
+                defaults.set(data, forKey: Keys.exitKeyModifiers)
             }
         }
     }
 
     var timeoutDuration: Int {
-        get { defaults.object(forKey: "timeoutDuration") as? Int ?? 120 }
-        set { defaults.set(newValue, forKey: "timeoutDuration") }
+        didSet { defaults.set(timeoutDuration, forKey: Keys.timeoutDuration) }
     }
 
     var exitOnLidOpen: Bool {
-        get { defaults.object(forKey: "exitOnLidOpen") as? Bool ?? false }
-        set { defaults.set(newValue, forKey: "exitOnLidOpen") }
+        didSet { defaults.set(exitOnLidOpen, forKey: Keys.exitOnLidOpen) }
+    }
+
+    var appLanguage: AppLanguage {
+        didSet {
+            defaults.set(appLanguage.rawValue, forKey: Keys.appLanguage)
+            applyAppLanguage()
+        }
+    }
+
+    init(defaults: UserDefaults = .standard) {
+        self.defaults = defaults
+
+        if let data = defaults.data(forKey: Keys.exitKeyModifiers),
+           let flags = try? JSONDecoder().decode(ModifierKeyFlags.self, from: data) {
+            self.exitKeyModifiers = flags
+        } else {
+            self.exitKeyModifiers = .defaultFlags
+        }
+
+        self.timeoutDuration = defaults.object(forKey: Keys.timeoutDuration) as? Int ?? 120
+        self.exitOnLidOpen = defaults.object(forKey: Keys.exitOnLidOpen) as? Bool ?? false
+        self.appLanguage = AppLanguage(rawValue: defaults.string(forKey: Keys.appLanguage) ?? "") ?? .system
+    }
+
+    /// Applies the selected language by overriding `AppleLanguages`, or clears the
+    /// override to follow the system. Takes effect on next launch.
+    private func applyAppLanguage() {
+        if let code = appLanguage.localeCode {
+            defaults.set([code], forKey: Keys.appleLanguages)
+        } else {
+            defaults.removeObject(forKey: Keys.appleLanguages)
+        }
     }
 }
