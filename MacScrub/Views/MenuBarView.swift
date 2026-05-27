@@ -23,6 +23,8 @@ struct MenuBarView: View {
                     let options = [kAXTrustedCheckOptionPrompt.takeUnretainedValue(): true] as CFDictionary
                     if AXIsProcessTrustedWithOptions(options) {
                         manager.activate()
+                    } else {
+                        PermissionGuideView.showIfNeeded()
                     }
                 } label: {
                     Label("Start Cleaning Mode", systemImage: "play.circle")

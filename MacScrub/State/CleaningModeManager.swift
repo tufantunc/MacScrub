@@ -1,6 +1,7 @@
 import SwiftUI
 import CoreGraphics
 import AVFoundation
+import ApplicationServices
 
 @MainActor
 @Observable
@@ -12,6 +13,10 @@ final class CleaningModeManager {
     private let lidMonitor: LidMonitor
     private var timeoutTask: Task<Void, Never>?
     private let exitSoundID: SystemSoundID = 1057
+
+    var needsPermission: Bool {
+        AXIsProcessTrusted() == false
+    }
     weak var overlayController: OverlayWindowController?
 
     init(settings: SettingsStore, eventBlocker: EventBlockerProtocol, lidMonitor: LidMonitor) {

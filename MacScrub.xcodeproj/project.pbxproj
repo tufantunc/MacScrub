@@ -7,13 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A1B2C3D4E5F6A7B8C9D0E1F2 /* PermissionGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E2D3C4B5A6F7E8D9C0B1A2 /* PermissionGuideView.swift */; };
 		0C4B1071B012D55BBC7965EF /* PlaceholderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF464DD9F9284408E72D25E /* PlaceholderTests.swift */; };
+		314FEE888F15FA343A06FB4B /* ModifierKeyDetectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16972F96DB79329166DCC6A6 /* ModifierKeyDetectorTests.swift */; };
+		358F7A184EC93F8CE87208D7 /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E02DC57569DE0BE833A870AC /* MenuBarView.swift */; };
+		47BCBF8A959C9BC70690778B /* CleaningOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06363CB09EABB2DD031E3C64 /* CleaningOverlayView.swift */; };
+		4CAF6AFC404C3B61FA0AC8A8 /* CleaningModeManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A935D8AF7BC70AA546771B6 /* CleaningModeManagerTests.swift */; };
+		50EB67C2A96211CA80DB7A7B /* CleaningModeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB2473C238FA38A1FACC45F /* CleaningModeManager.swift */; };
 		63D8FB381F081E7A9C857739 /* MacScrubApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F956047E15CE97B460172F4 /* MacScrubApp.swift */; };
 		7030B47403BB2303BDE11BE4 /* ModifierKeyFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6188A21B395267675250126 /* ModifierKeyFlags.swift */; };
 		7AF487CA24EA54EDF2C2B4B0 /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B7ED64766B41AB522C0621F /* SettingsStore.swift */; };
+		7D166A20CF51998E7E9FB739 /* LidMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 412BA5D647677C183B12D361 /* LidMonitor.swift */; };
+		7D5C1BE73A1A7DB65AF01CF2 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE84A084090022B12B0966F /* SettingsView.swift */; };
 		B8F0537B42C234051F7C2141 /* EventBlocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02241268A15457C57EF0BA08 /* EventBlocker.swift */; };
 		C5456A44FE771ED50CB80BAE /* EventBlockerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E22A72ED5DAABA6E6950698 /* EventBlockerProtocol.swift */; };
+		CC232D8EBEBEB886371416AA /* ModifierKeyDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2D878D263D6BB132FBBD34 /* ModifierKeyDetector.swift */; };
 		EE07637915819FD860B5AFC2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 486D1F048B081ACB26A43DCB /* Assets.xcassets */; };
+		EE3A6FC9DDC3AC386F8F0DF0 /* ModifierKeySquare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AF1C8F12D759AD4E52A83A7 /* ModifierKeySquare.swift */; };
 		F091DD8DD734D7207BA14D4C /* SettingsStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7401E1F6E8E9E9BB239D4C6F /* SettingsStoreTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -28,16 +38,26 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F1E2D3C4B5A6F7E8D9C0B1A2 /* PermissionGuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionGuideView.swift; sourceTree = "<group>"; };
 		02241268A15457C57EF0BA08 /* EventBlocker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventBlocker.swift; sourceTree = "<group>"; };
+		06363CB09EABB2DD031E3C64 /* CleaningOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CleaningOverlayView.swift; sourceTree = "<group>"; };
 		0F07F10EFCC220987F292A76 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		16972F96DB79329166DCC6A6 /* ModifierKeyDetectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifierKeyDetectorTests.swift; sourceTree = "<group>"; };
+		2A935D8AF7BC70AA546771B6 /* CleaningModeManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CleaningModeManagerTests.swift; sourceTree = "<group>"; };
+		2CB2473C238FA38A1FACC45F /* CleaningModeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CleaningModeManager.swift; sourceTree = "<group>"; };
+		3DE84A084090022B12B0966F /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		412BA5D647677C183B12D361 /* LidMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LidMonitor.swift; sourceTree = "<group>"; };
 		486D1F048B081ACB26A43DCB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		5C2D878D263D6BB132FBBD34 /* ModifierKeyDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifierKeyDetector.swift; sourceTree = "<group>"; };
 		5F956047E15CE97B460172F4 /* MacScrubApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacScrubApp.swift; sourceTree = "<group>"; };
+		6AF1C8F12D759AD4E52A83A7 /* ModifierKeySquare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifierKeySquare.swift; sourceTree = "<group>"; };
 		7401E1F6E8E9E9BB239D4C6F /* SettingsStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStoreTests.swift; sourceTree = "<group>"; };
 		7E22A72ED5DAABA6E6950698 /* EventBlockerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventBlockerProtocol.swift; sourceTree = "<group>"; };
 		9B7ED64766B41AB522C0621F /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
 		B2A7BC80B89785720B4B902C /* MacScrubTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MacScrubTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFF464DD9F9284408E72D25E /* PlaceholderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderTests.swift; sourceTree = "<group>"; };
 		C6188A21B395267675250126 /* ModifierKeyFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifierKeyFlags.swift; sourceTree = "<group>"; };
+		E02DC57569DE0BE833A870AC /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
 		E9C1E7D100BFCB710B7608A8 /* MacScrub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MacScrub.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -49,6 +69,7 @@
 				8014A7D651CA462F28852964 /* App */,
 				833E964141FAF4F81C7363F6 /* Core */,
 				EE96F973A4574E504143197E /* State */,
+				9C425CAF6C86C46505CAB4C1 /* Views */,
 			);
 			path = MacScrub;
 			sourceTree = "<group>";
@@ -67,13 +88,29 @@
 			children = (
 				02241268A15457C57EF0BA08 /* EventBlocker.swift */,
 				7E22A72ED5DAABA6E6950698 /* EventBlockerProtocol.swift */,
+				412BA5D647677C183B12D361 /* LidMonitor.swift */,
+				5C2D878D263D6BB132FBBD34 /* ModifierKeyDetector.swift */,
 			);
 			path = Core;
+			sourceTree = "<group>";
+		};
+		9C425CAF6C86C46505CAB4C1 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				06363CB09EABB2DD031E3C64 /* CleaningOverlayView.swift */,
+				E02DC57569DE0BE833A870AC /* MenuBarView.swift */,
+				6AF1C8F12D759AD4E52A83A7 /* ModifierKeySquare.swift */,
+				F1E2D3C4B5A6F7E8D9C0B1A2 /* PermissionGuideView.swift */,
+				3DE84A084090022B12B0966F /* SettingsView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		AF01FBE6B3B25A653C8BDF59 /* MacScrubTests */ = {
 			isa = PBXGroup;
 			children = (
+				2A935D8AF7BC70AA546771B6 /* CleaningModeManagerTests.swift */,
+				16972F96DB79329166DCC6A6 /* ModifierKeyDetectorTests.swift */,
 				BFF464DD9F9284408E72D25E /* PlaceholderTests.swift */,
 				7401E1F6E8E9E9BB239D4C6F /* SettingsStoreTests.swift */,
 			);
@@ -92,6 +129,7 @@
 		EE96F973A4574E504143197E /* State */ = {
 			isa = PBXGroup;
 			children = (
+				2CB2473C238FA38A1FACC45F /* CleaningModeManager.swift */,
 				C6188A21B395267675250126 /* ModifierKeyFlags.swift */,
 				9B7ED64766B41AB522C0621F /* SettingsStore.swift */,
 			);
@@ -196,6 +234,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4CAF6AFC404C3B61FA0AC8A8 /* CleaningModeManagerTests.swift in Sources */,
+				314FEE888F15FA343A06FB4B /* ModifierKeyDetectorTests.swift in Sources */,
 				0C4B1071B012D55BBC7965EF /* PlaceholderTests.swift in Sources */,
 				F091DD8DD734D7207BA14D4C /* SettingsStoreTests.swift in Sources */,
 			);
@@ -205,11 +245,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				50EB67C2A96211CA80DB7A7B /* CleaningModeManager.swift in Sources */,
+				47BCBF8A959C9BC70690778B /* CleaningOverlayView.swift in Sources */,
 				B8F0537B42C234051F7C2141 /* EventBlocker.swift in Sources */,
 				C5456A44FE771ED50CB80BAE /* EventBlockerProtocol.swift in Sources */,
+				7D166A20CF51998E7E9FB739 /* LidMonitor.swift in Sources */,
 				63D8FB381F081E7A9C857739 /* MacScrubApp.swift in Sources */,
+				A1B2C3D4E5F6A7B8C9D0E1F2 /* PermissionGuideView.swift in Sources */,
+				358F7A184EC93F8CE87208D7 /* MenuBarView.swift in Sources */,
+				CC232D8EBEBEB886371416AA /* ModifierKeyDetector.swift in Sources */,
 				7030B47403BB2303BDE11BE4 /* ModifierKeyFlags.swift in Sources */,
+				EE3A6FC9DDC3AC386F8F0DF0 /* ModifierKeySquare.swift in Sources */,
 				7AF487CA24EA54EDF2C2B4B0 /* SettingsStore.swift in Sources */,
+				7D5C1BE73A1A7DB65AF01CF2 /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
