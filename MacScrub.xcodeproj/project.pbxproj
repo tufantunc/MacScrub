@@ -26,6 +26,7 @@
 		EE07637915819FD860B5AFC2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 486D1F048B081ACB26A43DCB /* Assets.xcassets */; };
 		EE3A6FC9DDC3AC386F8F0DF0 /* ModifierKeySquare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AF1C8F12D759AD4E52A83A7 /* ModifierKeySquare.swift */; };
 		F091DD8DD734D7207BA14D4C /* SettingsStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7401E1F6E8E9E9BB239D4C6F /* SettingsStoreTests.swift */; };
+		B9D7F6CA3A274B89BED22679 /* PermissionGuideViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE42F4D03C1E4DA3A955D1F6 /* PermissionGuideViewTests.swift */; };
 		F13745B120A12CA147052861 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 6C36DFEA5DA216C1B8B1DD7C /* Localizable.xcstrings */; };
 /* End PBXBuildFile section */
 
@@ -53,6 +54,7 @@
 		6AF1C8F12D759AD4E52A83A7 /* ModifierKeySquare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifierKeySquare.swift; sourceTree = "<group>"; };
 		6C36DFEA5DA216C1B8B1DD7C /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		7401E1F6E8E9E9BB239D4C6F /* SettingsStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStoreTests.swift; sourceTree = "<group>"; };
+		FE42F4D03C1E4DA3A955D1F6 /* PermissionGuideViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionGuideViewTests.swift; sourceTree = "<group>"; };
 		7E22A72ED5DAABA6E6950698 /* EventBlockerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventBlockerProtocol.swift; sourceTree = "<group>"; };
 		93C508CA08B474D60F7CB535 /* PermissionGuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionGuideView.swift; sourceTree = "<group>"; };
 		9B7ED64766B41AB522C0621F /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
@@ -118,6 +120,7 @@
 				16972F96DB79329166DCC6A6 /* ModifierKeyDetectorTests.swift */,
 				BFF464DD9F9284408E72D25E /* PlaceholderTests.swift */,
 				7401E1F6E8E9E9BB239D4C6F /* SettingsStoreTests.swift */,
+				FE42F4D03C1E4DA3A955D1F6 /* PermissionGuideViewTests.swift */,
 			);
 			path = MacScrubTests;
 			sourceTree = "<group>";
@@ -255,6 +258,7 @@
 				314FEE888F15FA343A06FB4B /* ModifierKeyDetectorTests.swift in Sources */,
 				0C4B1071B012D55BBC7965EF /* PlaceholderTests.swift in Sources */,
 				F091DD8DD734D7207BA14D4C /* SettingsStoreTests.swift in Sources */,
+				B9D7F6CA3A274B89BED22679 /* PermissionGuideViewTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
