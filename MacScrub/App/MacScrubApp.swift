@@ -4,9 +4,8 @@ import SwiftUI
 class OverlayWindowController {
     var overlayWindow: NSWindow?
 
-    func show(manager: CleaningModeManager) {
-        guard overlayWindow == nil else { return }
-        guard let screen = NSScreen.main else { return }
+    func makeOverlayWindow(manager: CleaningModeManager) -> NSWindow? {
+        guard let screen = NSScreen.main else { return nil }
         let window = NSWindow(
             contentRect: screen.frame,
             styleMask: [.borderless],
@@ -14,6 +13,10 @@ class OverlayWindowController {
             defer: false,
             screen: screen
         )
+        // This controller owns the window via `overlayWindow` (ARC). Without
+        // this, NSWindow defaults to releasing itself on close, which would
+        // double-free when ARC also releases it → EXC_BAD_ACCESS on deactivate.
+        window.isReleasedWhenClosed = false
         window.level = .statusBar + 1
         window.isOpaque = false
         window.backgroundColor = .clear
@@ -23,6 +26,12 @@ class OverlayWindowController {
         let view = NSHostingView(rootView: CleaningOverlayView(manager: manager))
         view.frame = screen.frame
         window.contentView = view
+        return window
+    }
+
+    func show(manager: CleaningModeManager) {
+        guard overlayWindow == nil else { return }
+        guard let window = makeOverlayWindow(manager: manager) else { return }
         window.makeKeyAndOrderFront(nil)
         overlayWindow = window
     }

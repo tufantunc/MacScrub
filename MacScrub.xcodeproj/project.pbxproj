@@ -24,6 +24,7 @@
 		B8F0537B42C234051F7C2141 /* EventBlocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02241268A15457C57EF0BA08 /* EventBlocker.swift */; };
 		C5456A44FE771ED50CB80BAE /* EventBlockerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E22A72ED5DAABA6E6950698 /* EventBlockerProtocol.swift */; };
 		CC232D8EBEBEB886371416AA /* ModifierKeyDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2D878D263D6BB132FBBD34 /* ModifierKeyDetector.swift */; };
+		E0E95B009780BCE9D6D4BE0D /* OverlayWindowControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EC5E92370DBA82AE000535 /* OverlayWindowControllerTests.swift */; };
 		EE07637915819FD860B5AFC2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 486D1F048B081ACB26A43DCB /* Assets.xcassets */; };
 		EE3A6FC9DDC3AC386F8F0DF0 /* ModifierKeySquare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AF1C8F12D759AD4E52A83A7 /* ModifierKeySquare.swift */; };
 		F091DD8DD734D7207BA14D4C /* SettingsStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7401E1F6E8E9E9BB239D4C6F /* SettingsStoreTests.swift */; };
@@ -63,6 +64,7 @@
 		C6188A21B395267675250126 /* ModifierKeyFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifierKeyFlags.swift; sourceTree = "<group>"; };
 		D5E3C1FB2F3CBAEE836493E9 /* MainWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowView.swift; sourceTree = "<group>"; };
 		E02DC57569DE0BE833A870AC /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
+		E2EC5E92370DBA82AE000535 /* OverlayWindowControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayWindowControllerTests.swift; sourceTree = "<group>"; };
 		E9C1E7D100BFCB710B7608A8 /* MacScrub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MacScrub.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9DF00376898B694731D4D3F /* AppLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLanguage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -118,6 +120,7 @@
 			children = (
 				2A935D8AF7BC70AA546771B6 /* CleaningModeManagerTests.swift */,
 				16972F96DB79329166DCC6A6 /* ModifierKeyDetectorTests.swift */,
+				E2EC5E92370DBA82AE000535 /* OverlayWindowControllerTests.swift */,
 				A630271F7DE98BDCB46AD554 /* PermissionGuideViewTests.swift */,
 				BFF464DD9F9284408E72D25E /* PlaceholderTests.swift */,
 				7401E1F6E8E9E9BB239D4C6F /* SettingsStoreTests.swift */,
@@ -261,6 +264,7 @@
 			files = (
 				4CAF6AFC404C3B61FA0AC8A8 /* CleaningModeManagerTests.swift in Sources */,
 				314FEE888F15FA343A06FB4B /* ModifierKeyDetectorTests.swift in Sources */,
+				E0E95B009780BCE9D6D4BE0D /* OverlayWindowControllerTests.swift in Sources */,
 				795CDCC88A36B3C01CD66B66 /* PermissionGuideViewTests.swift in Sources */,
 				0C4B1071B012D55BBC7965EF /* PlaceholderTests.swift in Sources */,
 				F091DD8DD734D7207BA14D4C /* SettingsStoreTests.swift in Sources */,
