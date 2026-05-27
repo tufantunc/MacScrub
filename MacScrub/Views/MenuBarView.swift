@@ -5,22 +5,20 @@ struct MenuBarView: View {
     @Bindable var manager: CleaningModeManager
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            HStack {
+        VStack(alignment: .leading) {
+            if manager.isActive {
                 Text("🧼 MacScrub")
                     .font(.headline)
-                Spacer()
-            }
-
-            Divider()
-
-            if manager.isActive {
+                Divider()
                 Button {
                     manager.deactivate()
                 } label: {
                     Label(String(localized: "menu.stop_cleaning", defaultValue: "Stop Cleaning Mode"), systemImage: "stop.circle")
                 }
             } else {
+                Text("🧼 MacScrub")
+                    .font(.headline)
+                Divider()
                 Button {
                     let options = [kAXTrustedCheckOptionPrompt.takeUnretainedValue(): true] as CFDictionary
                     if AXIsProcessTrustedWithOptions(options) {
@@ -34,18 +32,14 @@ struct MenuBarView: View {
             }
 
             Divider()
-
             SettingsLink {
                 Label(String(localized: "menu.settings", defaultValue: "Settings..."), systemImage: "gearshape")
             }
 
-            Button {
+            Divider()
+            Button(String(localized: "menu.quit", defaultValue: "Quit MacScrub")) {
                 NSApplication.shared.terminate(nil)
-            } label: {
-                Label(String(localized: "menu.quit", defaultValue: "Quit MacScrub"), systemImage: "xmark.circle")
             }
         }
-        .padding(12)
-        .frame(width: 240)
     }
 }
