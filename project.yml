@@ -40,3 +40,4 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.macscrub.tests
         CODE_SIGN_IDENTITY: "-"
+        GENERATE_INFOPLIST_FILE: "YES"
