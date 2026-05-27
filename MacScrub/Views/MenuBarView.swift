@@ -32,10 +32,7 @@ struct MenuBarView: View {
             }
 
             Divider()
-            Button {
-                NSApp.activate(ignoringOtherApps: true)
-                NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
-            } label: {
+            SettingsLink {
                 Label(String(localized: "menu.settings", defaultValue: "Settings..."), systemImage: "gearshape")
             }
 
