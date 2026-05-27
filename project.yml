@@ -10,6 +10,13 @@ settings:
   base:
     SWIFT_VERSION: "5.9"
     MACOSX_DEPLOYMENT_TARGET: "14.0"
+    # Sign with a stable Apple Development identity (not ad-hoc "-") so the
+    # code signature's designated requirement is identity-based rather than
+    # pinned to the per-build cdhash. This keeps the Accessibility (TCC) grant
+    # valid across rebuilds instead of re-prompting on every launch.
+    DEVELOPMENT_TEAM: FA2WUDBFB8
+    CODE_SIGN_STYLE: Automatic
+    CODE_SIGN_IDENTITY: "Apple Development"
 
 targets:
   MacScrub:
@@ -21,13 +28,15 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.macscrub.app
         INFOPLIST_FILE: MacScrub/App/Info.plist
-        CODE_SIGN_IDENTITY: "-"
-        CODE_SIGN_STYLE: Automatic
         GENERATE_INFOPLIST_FILE: false
         SWIFT_EMIT_LOC_STRINGS: "YES"
     dependencies: []
     info:
       path: MacScrub/App/Info.plist
+      properties:
+        # Run as a menu-bar accessory: no Dock icon. The main window is still
+        # shown on launch (the app activates itself via NSApp.activate).
+        LSUIElement: true
 
   MacScrubTests:
     type: bundle.unit-test
@@ -39,5 +48,4 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.macscrub.tests
-        CODE_SIGN_IDENTITY: "-"
         GENERATE_INFOPLIST_FILE: "YES"

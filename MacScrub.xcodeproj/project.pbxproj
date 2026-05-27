@@ -10,23 +10,23 @@
 		0C4B1071B012D55BBC7965EF /* PlaceholderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF464DD9F9284408E72D25E /* PlaceholderTests.swift */; };
 		314FEE888F15FA343A06FB4B /* ModifierKeyDetectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16972F96DB79329166DCC6A6 /* ModifierKeyDetectorTests.swift */; };
 		358F7A184EC93F8CE87208D7 /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E02DC57569DE0BE833A870AC /* MenuBarView.swift */; };
-		A1B2C3D4E5F60718293A4B6E /* MainWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A4B6F /* MainWindowView.swift */; };
 		47BCBF8A959C9BC70690778B /* CleaningOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06363CB09EABB2DD031E3C64 /* CleaningOverlayView.swift */; };
 		4CAF6AFC404C3B61FA0AC8A8 /* CleaningModeManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A935D8AF7BC70AA546771B6 /* CleaningModeManagerTests.swift */; };
 		50EB67C2A96211CA80DB7A7B /* CleaningModeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB2473C238FA38A1FACC45F /* CleaningModeManager.swift */; };
+		5E4542A0C785B9C0869367B9 /* AppLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9DF00376898B694731D4D3F /* AppLanguage.swift */; };
 		63D8FB381F081E7A9C857739 /* MacScrubApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F956047E15CE97B460172F4 /* MacScrubApp.swift */; };
 		7030B47403BB2303BDE11BE4 /* ModifierKeyFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6188A21B395267675250126 /* ModifierKeyFlags.swift */; };
-		A1B2C3D4E5F60718293A4B5C /* AppLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A4B5D /* AppLanguage.swift */; };
 		709712F4F104E92FE67A9B2A /* PermissionGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C508CA08B474D60F7CB535 /* PermissionGuideView.swift */; };
+		795CDCC88A36B3C01CD66B66 /* PermissionGuideViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A630271F7DE98BDCB46AD554 /* PermissionGuideViewTests.swift */; };
 		7AF487CA24EA54EDF2C2B4B0 /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B7ED64766B41AB522C0621F /* SettingsStore.swift */; };
 		7D166A20CF51998E7E9FB739 /* LidMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 412BA5D647677C183B12D361 /* LidMonitor.swift */; };
+		A43BAED88058FB4DA1B912F3 /* MainWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E3C1FB2F3CBAEE836493E9 /* MainWindowView.swift */; };
 		B8F0537B42C234051F7C2141 /* EventBlocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02241268A15457C57EF0BA08 /* EventBlocker.swift */; };
 		C5456A44FE771ED50CB80BAE /* EventBlockerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E22A72ED5DAABA6E6950698 /* EventBlockerProtocol.swift */; };
 		CC232D8EBEBEB886371416AA /* ModifierKeyDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2D878D263D6BB132FBBD34 /* ModifierKeyDetector.swift */; };
 		EE07637915819FD860B5AFC2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 486D1F048B081ACB26A43DCB /* Assets.xcassets */; };
 		EE3A6FC9DDC3AC386F8F0DF0 /* ModifierKeySquare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AF1C8F12D759AD4E52A83A7 /* ModifierKeySquare.swift */; };
 		F091DD8DD734D7207BA14D4C /* SettingsStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7401E1F6E8E9E9BB239D4C6F /* SettingsStoreTests.swift */; };
-		B9D7F6CA3A274B89BED22679 /* PermissionGuideViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE42F4D03C1E4DA3A955D1F6 /* PermissionGuideViewTests.swift */; };
 		F13745B120A12CA147052861 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 6C36DFEA5DA216C1B8B1DD7C /* Localizable.xcstrings */; };
 /* End PBXBuildFile section */
 
@@ -54,17 +54,17 @@
 		6AF1C8F12D759AD4E52A83A7 /* ModifierKeySquare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifierKeySquare.swift; sourceTree = "<group>"; };
 		6C36DFEA5DA216C1B8B1DD7C /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		7401E1F6E8E9E9BB239D4C6F /* SettingsStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStoreTests.swift; sourceTree = "<group>"; };
-		FE42F4D03C1E4DA3A955D1F6 /* PermissionGuideViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionGuideViewTests.swift; sourceTree = "<group>"; };
 		7E22A72ED5DAABA6E6950698 /* EventBlockerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventBlockerProtocol.swift; sourceTree = "<group>"; };
 		93C508CA08B474D60F7CB535 /* PermissionGuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionGuideView.swift; sourceTree = "<group>"; };
 		9B7ED64766B41AB522C0621F /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
+		A630271F7DE98BDCB46AD554 /* PermissionGuideViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionGuideViewTests.swift; sourceTree = "<group>"; };
 		B2A7BC80B89785720B4B902C /* MacScrubTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MacScrubTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFF464DD9F9284408E72D25E /* PlaceholderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderTests.swift; sourceTree = "<group>"; };
 		C6188A21B395267675250126 /* ModifierKeyFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifierKeyFlags.swift; sourceTree = "<group>"; };
-		A1B2C3D4E5F60718293A4B5D /* AppLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLanguage.swift; sourceTree = "<group>"; };
+		D5E3C1FB2F3CBAEE836493E9 /* MainWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowView.swift; sourceTree = "<group>"; };
 		E02DC57569DE0BE833A870AC /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
-		A1B2C3D4E5F60718293A4B6F /* MainWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowView.swift; sourceTree = "<group>"; };
 		E9C1E7D100BFCB710B7608A8 /* MacScrub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MacScrub.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9DF00376898B694731D4D3F /* AppLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLanguage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -105,8 +105,8 @@
 			isa = PBXGroup;
 			children = (
 				06363CB09EABB2DD031E3C64 /* CleaningOverlayView.swift */,
+				D5E3C1FB2F3CBAEE836493E9 /* MainWindowView.swift */,
 				E02DC57569DE0BE833A870AC /* MenuBarView.swift */,
-				A1B2C3D4E5F60718293A4B6F /* MainWindowView.swift */,
 				6AF1C8F12D759AD4E52A83A7 /* ModifierKeySquare.swift */,
 				93C508CA08B474D60F7CB535 /* PermissionGuideView.swift */,
 			);
@@ -118,9 +118,9 @@
 			children = (
 				2A935D8AF7BC70AA546771B6 /* CleaningModeManagerTests.swift */,
 				16972F96DB79329166DCC6A6 /* ModifierKeyDetectorTests.swift */,
+				A630271F7DE98BDCB46AD554 /* PermissionGuideViewTests.swift */,
 				BFF464DD9F9284408E72D25E /* PlaceholderTests.swift */,
 				7401E1F6E8E9E9BB239D4C6F /* SettingsStoreTests.swift */,
-				FE42F4D03C1E4DA3A955D1F6 /* PermissionGuideViewTests.swift */,
 			);
 			path = MacScrubTests;
 			sourceTree = "<group>";
@@ -145,8 +145,8 @@
 		EE96F973A4574E504143197E /* State */ = {
 			isa = PBXGroup;
 			children = (
+				F9DF00376898B694731D4D3F /* AppLanguage.swift */,
 				2CB2473C238FA38A1FACC45F /* CleaningModeManager.swift */,
-				A1B2C3D4E5F60718293A4B5D /* AppLanguage.swift */,
 				C6188A21B395267675250126 /* ModifierKeyFlags.swift */,
 				9B7ED64766B41AB522C0621F /* SettingsStore.swift */,
 			);
@@ -210,7 +210,12 @@
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1500;
 				TargetAttributes = {
+					DA31A6F6282970A115193951 = {
+						DevelopmentTeam = FA2WUDBFB8;
+						ProvisioningStyle = Automatic;
+					};
 					DC849C0835F3612968154A7D = {
+						DevelopmentTeam = FA2WUDBFB8;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -256,9 +261,9 @@
 			files = (
 				4CAF6AFC404C3B61FA0AC8A8 /* CleaningModeManagerTests.swift in Sources */,
 				314FEE888F15FA343A06FB4B /* ModifierKeyDetectorTests.swift in Sources */,
+				795CDCC88A36B3C01CD66B66 /* PermissionGuideViewTests.swift in Sources */,
 				0C4B1071B012D55BBC7965EF /* PlaceholderTests.swift in Sources */,
 				F091DD8DD734D7207BA14D4C /* SettingsStoreTests.swift in Sources */,
-				B9D7F6CA3A274B89BED22679 /* PermissionGuideViewTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -266,17 +271,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E4542A0C785B9C0869367B9 /* AppLanguage.swift in Sources */,
 				50EB67C2A96211CA80DB7A7B /* CleaningModeManager.swift in Sources */,
 				47BCBF8A959C9BC70690778B /* CleaningOverlayView.swift in Sources */,
 				B8F0537B42C234051F7C2141 /* EventBlocker.swift in Sources */,
 				C5456A44FE771ED50CB80BAE /* EventBlockerProtocol.swift in Sources */,
 				7D166A20CF51998E7E9FB739 /* LidMonitor.swift in Sources */,
 				63D8FB381F081E7A9C857739 /* MacScrubApp.swift in Sources */,
+				A43BAED88058FB4DA1B912F3 /* MainWindowView.swift in Sources */,
 				358F7A184EC93F8CE87208D7 /* MenuBarView.swift in Sources */,
-				A1B2C3D4E5F60718293A4B6E /* MainWindowView.swift in Sources */,
 				CC232D8EBEBEB886371416AA /* ModifierKeyDetector.swift in Sources */,
 				7030B47403BB2303BDE11BE4 /* ModifierKeyFlags.swift in Sources */,
-				A1B2C3D4E5F60718293A4B5C /* AppLanguage.swift in Sources */,
 				EE3A6FC9DDC3AC386F8F0DF0 /* ModifierKeySquare.swift in Sources */,
 				709712F4F104E92FE67A9B2A /* PermissionGuideView.swift in Sources */,
 				7AF487CA24EA54EDF2C2B4B0 /* SettingsStore.swift in Sources */,
@@ -298,8 +303,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "-";
-				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = MacScrub/App/Info.plist;
@@ -317,7 +320,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -335,7 +337,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -382,8 +383,11 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = FA2WUDBFB8;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -438,8 +442,11 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = FA2WUDBFB8;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -472,8 +479,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "-";
-				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = MacScrub/App/Info.plist;
