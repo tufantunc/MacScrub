@@ -10,6 +10,7 @@
 		0C4B1071B012D55BBC7965EF /* PlaceholderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF464DD9F9284408E72D25E /* PlaceholderTests.swift */; };
 		314FEE888F15FA343A06FB4B /* ModifierKeyDetectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16972F96DB79329166DCC6A6 /* ModifierKeyDetectorTests.swift */; };
 		358F7A184EC93F8CE87208D7 /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E02DC57569DE0BE833A870AC /* MenuBarView.swift */; };
+		A1B2C3D4E5F60718293A4B6E /* MainWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A4B6F /* MainWindowView.swift */; };
 		47BCBF8A959C9BC70690778B /* CleaningOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06363CB09EABB2DD031E3C64 /* CleaningOverlayView.swift */; };
 		4CAF6AFC404C3B61FA0AC8A8 /* CleaningModeManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A935D8AF7BC70AA546771B6 /* CleaningModeManagerTests.swift */; };
 		50EB67C2A96211CA80DB7A7B /* CleaningModeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB2473C238FA38A1FACC45F /* CleaningModeManager.swift */; };
@@ -62,6 +63,7 @@
 		C6188A21B395267675250126 /* ModifierKeyFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifierKeyFlags.swift; sourceTree = "<group>"; };
 		A1B2C3D4E5F60718293A4B5D /* AppLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLanguage.swift; sourceTree = "<group>"; };
 		E02DC57569DE0BE833A870AC /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60718293A4B6F /* MainWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowView.swift; sourceTree = "<group>"; };
 		E9C1E7D100BFCB710B7608A8 /* MacScrub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MacScrub.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -104,6 +106,7 @@
 			children = (
 				06363CB09EABB2DD031E3C64 /* CleaningOverlayView.swift */,
 				E02DC57569DE0BE833A870AC /* MenuBarView.swift */,
+				A1B2C3D4E5F60718293A4B6F /* MainWindowView.swift */,
 				6AF1C8F12D759AD4E52A83A7 /* ModifierKeySquare.swift */,
 				93C508CA08B474D60F7CB535 /* PermissionGuideView.swift */,
 				3DE84A084090022B12B0966F /* SettingsView.swift */,
@@ -269,6 +272,7 @@
 				7D166A20CF51998E7E9FB739 /* LidMonitor.swift in Sources */,
 				63D8FB381F081E7A9C857739 /* MacScrubApp.swift in Sources */,
 				358F7A184EC93F8CE87208D7 /* MenuBarView.swift in Sources */,
+				A1B2C3D4E5F60718293A4B6E /* MainWindowView.swift in Sources */,
 				CC232D8EBEBEB886371416AA /* ModifierKeyDetector.swift in Sources */,
 				7030B47403BB2303BDE11BE4 /* ModifierKeyFlags.swift in Sources */,
 				A1B2C3D4E5F60718293A4B5C /* AppLanguage.swift in Sources */,
