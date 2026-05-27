@@ -67,7 +67,7 @@ struct MacScrubApp: App {
                 .symbolRenderingMode(.hierarchical)
                 .foregroundStyle(manager.isActive ? .blue : .secondary)
         }
-        .menuBarExtraStyle(.menu)
+        .menuBarExtraStyle(.window)
 
         Settings {
             SettingsView(settings: settings)
