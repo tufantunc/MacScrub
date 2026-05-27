@@ -1,0 +1,67 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode Project
+        run: xcodegen generate
+
+      - name: Create ExportOptions.plist
+        run: |
+          cat > ExportOptions.plist << 'EOF'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+              <key>method</key>
+              <string>copy</string>
+              <key>signing</key>
+              <dict>
+                  <key>style</key>
+                  <string>adhoc</string>
+              </dict>
+          </dict>
+          </plist>
+          EOF
+
+      - name: Build Archive
+        run: |
+          xcodebuild archive \
+            -project MacScrub.xcodeproj \
+            -scheme MacScrub \
+            -archivePath build/MacScrub.xcarchive \
+            CODE_SIGN_IDENTITY="-" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Export App
+        run: |
+          xcodebuild -exportArchive \
+            -archivePath build/MacScrub.xcarchive \
+            -exportPath build/export \
+            -exportOptionsPlist ExportOptions.plist
+
+      - name: Create DMG
+        run: |
+          DMG_NAME="MacScrub-${{ github.ref_name }}.dmg"
+          hdiutil create -volname "MacScrub" \
+            -srcfolder build/export/MacScrub.app \
+            -ov -format UDZO \
+            "$DMG_NAME"
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: "*.dmg"
+          generate_release_notes: true
