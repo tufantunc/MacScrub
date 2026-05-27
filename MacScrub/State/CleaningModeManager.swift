@@ -23,14 +23,10 @@ final class CleaningModeManager {
         self.settings = settings
         self.eventBlocker = eventBlocker
         self.lidMonitor = lidMonitor
-        self.modifierDetector = ModifierKeyDetector(
-            requiredKeys: settings.exitKeyModifiers,
-            holdDuration: 3.0
-        )
-
-        self.modifierDetector.onAllKeysHeld = { [weak self] in
-            self?.deactivate()
-        }
+        // Minimal placeholder so the non-optional property is set before
+        // makeDetector() (an instance method) can be called.
+        self.modifierDetector = ModifierKeyDetector(requiredKeys: [])
+        self.modifierDetector = makeDetector()
 
         self.lidMonitor.onLidOpen = { [weak self] in
             guard let self else { return }
@@ -40,16 +36,21 @@ final class CleaningModeManager {
         }
     }
 
-    func activate() {
-        guard !isActive else { return }
-
-        modifierDetector = ModifierKeyDetector(
+    private func makeDetector() -> ModifierKeyDetector {
+        let detector = ModifierKeyDetector(
             requiredKeys: settings.exitKeyModifiers,
             holdDuration: 3.0
         )
-        modifierDetector.onAllKeysHeld = { [weak self] in
+        detector.onAllKeysHeld = { [weak self] in
             self?.deactivate()
         }
+        return detector
+    }
+
+    func activate() {
+        guard !isActive else { return }
+
+        modifierDetector = makeDetector()
 
         eventBlocker.onFlagsChanged = { [weak self] flags in
             self?.modifierDetector.updateFlags(flags)
