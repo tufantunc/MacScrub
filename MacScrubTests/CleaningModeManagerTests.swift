@@ -1,4 +1,5 @@
 import Testing
+import Foundation
 import CoreGraphics
 @testable import MacScrub
 
@@ -12,7 +13,7 @@ struct CleaningModeManagerTests {
         let manager = CleaningModeManager(
             settings: SettingsStore(),
             eventBlocker: eventBlocker,
-            lidMonitor: LidMonitor()
+            lidMonitor: MockLidMonitor()
         )
         manager.activate()
         #expect(manager.isActive == true)
@@ -25,7 +26,7 @@ struct CleaningModeManagerTests {
         let manager = CleaningModeManager(
             settings: SettingsStore(),
             eventBlocker: eventBlocker,
-            lidMonitor: LidMonitor()
+            lidMonitor: MockLidMonitor()
         )
         manager.activate()
         manager.deactivate()
@@ -40,10 +41,67 @@ struct CleaningModeManagerTests {
         let manager = CleaningModeManager(
             settings: SettingsStore(),
             eventBlocker: eventBlocker,
-            lidMonitor: LidMonitor()
+            lidMonitor: MockLidMonitor()
         )
         manager.activate()
         #expect(manager.isActive == false)
+    }
+
+    @Test("Activate starts the lid monitor")
+    func testActivateStartsLidMonitor() {
+        let lid = MockLidMonitor()
+        let manager = CleaningModeManager(
+            settings: SettingsStore(defaults: UserDefaults(suiteName: UUID().uuidString)!),
+            eventBlocker: MockEventBlocker(),
+            lidMonitor: lid
+        )
+        manager.activate()
+        #expect(lid.startCalled == true)
+    }
+
+    @Test("Deactivate stops the lid monitor")
+    func testDeactivateStopsLidMonitor() {
+        let lid = MockLidMonitor()
+        let manager = CleaningModeManager(
+            settings: SettingsStore(defaults: UserDefaults(suiteName: UUID().uuidString)!),
+            eventBlocker: MockEventBlocker(),
+            lidMonitor: lid
+        )
+        manager.activate()
+        manager.deactivate()
+        #expect(lid.stopCalled == true)
+    }
+
+    @Test("Lid open exits cleaning when exitOnLidOpen is true")
+    func testLidOpenExitsWhenEnabled() {
+        let defaults = UserDefaults(suiteName: UUID().uuidString)!
+        let settings = SettingsStore(defaults: defaults)
+        settings.exitOnLidOpen = true
+        let lid = MockLidMonitor()
+        let manager = CleaningModeManager(
+            settings: settings,
+            eventBlocker: MockEventBlocker(),
+            lidMonitor: lid
+        )
+        manager.activate()
+        lid.simulateLidOpen()
+        #expect(manager.isActive == false)
+    }
+
+    @Test("Lid open does nothing when exitOnLidOpen is false")
+    func testLidOpenIgnoredWhenDisabled() {
+        let defaults = UserDefaults(suiteName: UUID().uuidString)!
+        let settings = SettingsStore(defaults: defaults)
+        settings.exitOnLidOpen = false
+        let lid = MockLidMonitor()
+        let manager = CleaningModeManager(
+            settings: settings,
+            eventBlocker: MockEventBlocker(),
+            lidMonitor: lid
+        )
+        manager.activate()
+        lid.simulateLidOpen()
+        #expect(manager.isActive == true)
     }
 }
 
@@ -67,4 +125,14 @@ final class MockEventBlocker: EventBlockerProtocol {
         stopCalled = true
         isBlocking = false
     }
+}
+
+@MainActor
+final class MockLidMonitor: LidMonitorProtocol {
+    var onLidOpen: (() -> Void)?
+    var startCalled = false
+    var stopCalled = false
+    func start() { startCalled = true }
+    func stop() { stopCalled = true }
+    func simulateLidOpen() { onLidOpen?() }
 }

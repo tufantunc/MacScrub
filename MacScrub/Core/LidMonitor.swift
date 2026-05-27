@@ -5,13 +5,21 @@ import IOKit.pwr_mgt
 private let kIOMessageSystemWillPowerOn: UInt32 = 0x04000320
 
 @MainActor
-final class LidMonitor {
+protocol LidMonitorProtocol: AnyObject {
+    var onLidOpen: (() -> Void)? { get set }
+    func start()
+    func stop()
+}
+
+@MainActor
+final class LidMonitor: LidMonitorProtocol {
     var onLidOpen: (() -> Void)?
     private var rootPort: io_object_t = 0
     private var notificationPort: IONotificationPortRef?
     private var notifier: io_object_t = 0
 
     func start() {
+        guard notificationPort == nil else { return }
         rootPort = IORegistryEntryFromPath(kIOMainPortDefault, "IOService:/")
         guard rootPort != 0 else { return }
 
@@ -21,13 +29,13 @@ final class LidMonitor {
         let runLoopSource = IONotificationPortGetRunLoopSource(notificationPort).takeUnretainedValue()
         CFRunLoopAddSource(CFRunLoopGetCurrent(), runLoopSource, .defaultMode)
 
-        var selfPtr = Unmanaged.passUnretained(self).toOpaque()
+        let selfPtr = Unmanaged.passUnretained(self).toOpaque()
         IOServiceAddInterestNotification(
             notificationPort,
             rootPort,
             kIOGeneralInterest,
             lidCallback,
-            &selfPtr,
+            selfPtr,
             &notifier
         )
     }

@@ -10,7 +10,7 @@ final class CleaningModeManager {
     private(set) var modifierDetector: ModifierKeyDetector
     let settings: SettingsStore
     private var eventBlocker: EventBlockerProtocol
-    private let lidMonitor: LidMonitor
+    private let lidMonitor: LidMonitorProtocol
     private var timeoutTask: Task<Void, Never>?
     private let exitSoundID: SystemSoundID = 1057
 
@@ -19,7 +19,7 @@ final class CleaningModeManager {
     }
     weak var overlayController: OverlayWindowController?
 
-    init(settings: SettingsStore, eventBlocker: EventBlockerProtocol, lidMonitor: LidMonitor) {
+    init(settings: SettingsStore, eventBlocker: EventBlockerProtocol, lidMonitor: LidMonitorProtocol) {
         self.settings = settings
         self.eventBlocker = eventBlocker
         self.lidMonitor = lidMonitor
@@ -63,6 +63,7 @@ final class CleaningModeManager {
         }
 
         isActive = true
+        lidMonitor.start()
         overlayController?.show(manager: self)
         startTimeout()
     }
@@ -70,6 +71,7 @@ final class CleaningModeManager {
     func deactivate() {
         guard isActive else { return }
         eventBlocker.stop()
+        lidMonitor.stop()
         modifierDetector.reset()
         timeoutTask?.cancel()
         timeoutTask = nil
