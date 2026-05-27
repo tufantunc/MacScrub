@@ -9,7 +9,12 @@
 /* Begin PBXBuildFile section */
 		0C4B1071B012D55BBC7965EF /* PlaceholderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF464DD9F9284408E72D25E /* PlaceholderTests.swift */; };
 		63D8FB381F081E7A9C857739 /* MacScrubApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F956047E15CE97B460172F4 /* MacScrubApp.swift */; };
+		7030B47403BB2303BDE11BE4 /* ModifierKeyFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6188A21B395267675250126 /* ModifierKeyFlags.swift */; };
+		7AF487CA24EA54EDF2C2B4B0 /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B7ED64766B41AB522C0621F /* SettingsStore.swift */; };
+		B8F0537B42C234051F7C2141 /* EventBlocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02241268A15457C57EF0BA08 /* EventBlocker.swift */; };
+		C5456A44FE771ED50CB80BAE /* EventBlockerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E22A72ED5DAABA6E6950698 /* EventBlockerProtocol.swift */; };
 		EE07637915819FD860B5AFC2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 486D1F048B081ACB26A43DCB /* Assets.xcassets */; };
+		F091DD8DD734D7207BA14D4C /* SettingsStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7401E1F6E8E9E9BB239D4C6F /* SettingsStoreTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -23,11 +28,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		02241268A15457C57EF0BA08 /* EventBlocker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventBlocker.swift; sourceTree = "<group>"; };
 		0F07F10EFCC220987F292A76 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		486D1F048B081ACB26A43DCB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5F956047E15CE97B460172F4 /* MacScrubApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacScrubApp.swift; sourceTree = "<group>"; };
+		7401E1F6E8E9E9BB239D4C6F /* SettingsStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStoreTests.swift; sourceTree = "<group>"; };
+		7E22A72ED5DAABA6E6950698 /* EventBlockerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventBlockerProtocol.swift; sourceTree = "<group>"; };
+		9B7ED64766B41AB522C0621F /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
 		B2A7BC80B89785720B4B902C /* MacScrubTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MacScrubTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFF464DD9F9284408E72D25E /* PlaceholderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderTests.swift; sourceTree = "<group>"; };
+		C6188A21B395267675250126 /* ModifierKeyFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifierKeyFlags.swift; sourceTree = "<group>"; };
 		E9C1E7D100BFCB710B7608A8 /* MacScrub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MacScrub.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -37,6 +47,8 @@
 			children = (
 				486D1F048B081ACB26A43DCB /* Assets.xcassets */,
 				8014A7D651CA462F28852964 /* App */,
+				833E964141FAF4F81C7363F6 /* Core */,
+				EE96F973A4574E504143197E /* State */,
 			);
 			path = MacScrub;
 			sourceTree = "<group>";
@@ -50,10 +62,20 @@
 			path = App;
 			sourceTree = "<group>";
 		};
+		833E964141FAF4F81C7363F6 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				02241268A15457C57EF0BA08 /* EventBlocker.swift */,
+				7E22A72ED5DAABA6E6950698 /* EventBlockerProtocol.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
 		AF01FBE6B3B25A653C8BDF59 /* MacScrubTests */ = {
 			isa = PBXGroup;
 			children = (
 				BFF464DD9F9284408E72D25E /* PlaceholderTests.swift */,
+				7401E1F6E8E9E9BB239D4C6F /* SettingsStoreTests.swift */,
 			);
 			path = MacScrubTests;
 			sourceTree = "<group>";
@@ -65,6 +87,15 @@
 				AF01FBE6B3B25A653C8BDF59 /* MacScrubTests */,
 				F7430AC7754F1DDBF94249AC /* Products */,
 			);
+			sourceTree = "<group>";
+		};
+		EE96F973A4574E504143197E /* State */ = {
+			isa = PBXGroup;
+			children = (
+				C6188A21B395267675250126 /* ModifierKeyFlags.swift */,
+				9B7ED64766B41AB522C0621F /* SettingsStore.swift */,
+			);
+			path = State;
 			sourceTree = "<group>";
 		};
 		F7430AC7754F1DDBF94249AC /* Products */ = {
@@ -166,6 +197,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0C4B1071B012D55BBC7965EF /* PlaceholderTests.swift in Sources */,
+				F091DD8DD734D7207BA14D4C /* SettingsStoreTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -173,7 +205,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B8F0537B42C234051F7C2141 /* EventBlocker.swift in Sources */,
+				C5456A44FE771ED50CB80BAE /* EventBlockerProtocol.swift in Sources */,
 				63D8FB381F081E7A9C857739 /* MacScrubApp.swift in Sources */,
+				7030B47403BB2303BDE11BE4 /* ModifierKeyFlags.swift in Sources */,
+				7AF487CA24EA54EDF2C2B4B0 /* SettingsStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -213,6 +249,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -230,6 +267,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
