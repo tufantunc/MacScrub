@@ -5,6 +5,15 @@ struct CleaningOverlayView: View {
     @State private var showContent = false
     @State private var breathing = false
 
+    /// Modifier squares to display, ordered consistently and filtered to the
+    /// user's configured exit keys.
+    private var orderedExitKeys: [(symbol: String, flag: ModifierKeyFlags)] {
+        let all: [(String, ModifierKeyFlags)] = [
+            ("⌘", .command), ("⌥", .option), ("⌃", .control), ("⇧", .shift),
+        ]
+        return all.filter { manager.settings.exitKeyModifiers.contains($0.1) }
+    }
+
     var body: some View {
         ZStack {
             if manager.isActive {
@@ -21,49 +30,42 @@ struct CleaningOverlayView: View {
                         .font(.system(size: 22, weight: .semibold, design: .default))
                         .foregroundStyle(.white)
 
+                    // Idle-reset countdown — recomputed once per second.
+                    TimelineView(.periodic(from: .now, by: 1)) { context in
+                        Text(formattedCountdown(deadline: manager.idleExitDeadline, now: context.date))
+                            .font(.system(size: 34, weight: .light))
+                            .monospacedDigit()
+                            .foregroundStyle(.white)
+                    }
+
                     Text(String(localized: "overlay.locked", defaultValue: "Keyboard and trackpad are locked."))
                         .font(.system(size: 13))
                         .foregroundStyle(.white.opacity(0.55))
                         .padding(.bottom, 8)
 
-                    Text(String(localized: "overlay.hold_to_exit", defaultValue: "Hold all modifiers to exit"))
+                    Text(String(localized: "overlay.hold_to_exit", defaultValue: "Hold exit keys to exit"))
                         .font(.system(size: 11))
                         .foregroundStyle(.white.opacity(0.35))
 
                     HStack(spacing: 14) {
-                        ModifierKeySquare(
-                            symbol: "⌘",
-                            isPressed: manager.modifierDetector.pressedKeys.contains(.command)
-                        )
-                        ModifierKeySquare(
-                            symbol: "⌥",
-                            isPressed: manager.modifierDetector.pressedKeys.contains(.option)
-                        )
-                        ModifierKeySquare(
-                            symbol: "⌃",
-                            isPressed: manager.modifierDetector.pressedKeys.contains(.control)
-                        )
-                        ModifierKeySquare(
-                            symbol: "⇧",
-                            isPressed: manager.modifierDetector.pressedKeys.contains(.shift)
-                        )
+                        ForEach(orderedExitKeys, id: \.symbol) { entry in
+                            ModifierKeySquare(
+                                symbol: entry.symbol,
+                                isPressed: manager.modifierDetector.pressedKeys.contains(entry.flag)
+                            )
+                        }
                     }
                     .padding(.vertical, 4)
 
-                    let requiredKeys = manager.settings.exitKeyModifiers
-                    let pressed = manager.modifierDetector.pressedKeys.intersection(requiredKeys).count
-                    let total = requiredKeys.count
-
-                    Text(String(localized: "\(pressed) of \(total) keys held"))
-                        .font(.system(size: 10))
-                        .foregroundStyle(.white.opacity(0.35))
-                        .padding(.bottom, 4)
-
-                    ProgressView(value: Double(pressed), total: Double(total))
-                        .progressViewStyle(.linear)
-                        .tint(.white.opacity(0.4))
-                        .frame(width: 120)
-                        .scaleEffect(y: 0.6)
+                    // Hold-progress bar — fills 0→1 over the 3 sec while all
+                    // required keys are held; 0 otherwise.
+                    TimelineView(.animation) { context in
+                        ProgressView(value: holdProgress(at: context.date))
+                            .progressViewStyle(.linear)
+                            .tint(.white.opacity(0.7))
+                            .frame(width: 160)
+                            .scaleEffect(y: 0.6)
+                    }
                 }
                 .padding(40)
                 .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 24))
@@ -86,5 +88,16 @@ struct CleaningOverlayView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(.ultraThinMaterial)
+    }
+
+    private func holdProgress(at date: Date) -> Double {
+        guard let start = manager.modifierDetector.holdStartDate else { return 0 }
+        let elapsed = date.timeIntervalSince(start)
+        return min(1, max(0, elapsed / manager.modifierDetector.holdDuration))
+    }
+
+    private func formattedCountdown(deadline: Date, now: Date) -> String {
+        let remaining = max(0, Int(deadline.timeIntervalSince(now).rounded(.up)))
+        return String(format: "%d:%02d", remaining / 60, remaining % 60)
     }
 }
