@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		0A54EC8C11BB1EB70DC8F3C3 /* ThemeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2DBBDFC0E2E639B82811308 /* ThemeTests.swift */; };
-		0C4B1071B012D55BBC7965EF /* PlaceholderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF464DD9F9284408E72D25E /* PlaceholderTests.swift */; };
 		314FEE888F15FA343A06FB4B /* ModifierKeyDetectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16972F96DB79329166DCC6A6 /* ModifierKeyDetectorTests.swift */; };
 		358F7A184EC93F8CE87208D7 /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E02DC57569DE0BE833A870AC /* MenuBarView.swift */; };
 		47BCBF8A959C9BC70690778B /* CleaningOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06363CB09EABB2DD031E3C64 /* CleaningOverlayView.swift */; };
@@ -67,7 +66,6 @@
 		A630271F7DE98BDCB46AD554 /* PermissionGuideViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionGuideViewTests.swift; sourceTree = "<group>"; };
 		B2A7BC80B89785720B4B902C /* MacScrubTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MacScrubTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2DBBDFC0E2E639B82811308 /* ThemeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeTests.swift; sourceTree = "<group>"; };
-		BFF464DD9F9284408E72D25E /* PlaceholderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderTests.swift; sourceTree = "<group>"; };
 		C6188A21B395267675250126 /* ModifierKeyFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifierKeyFlags.swift; sourceTree = "<group>"; };
 		D5E3C1FB2F3CBAEE836493E9 /* MainWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowView.swift; sourceTree = "<group>"; };
 		DBC64B7F5063692DE41DE82C /* HubNavigationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HubNavigationTests.swift; sourceTree = "<group>"; };
@@ -132,7 +130,6 @@
 				16972F96DB79329166DCC6A6 /* ModifierKeyDetectorTests.swift */,
 				E2EC5E92370DBA82AE000535 /* OverlayWindowControllerTests.swift */,
 				A630271F7DE98BDCB46AD554 /* PermissionGuideViewTests.swift */,
-				BFF464DD9F9284408E72D25E /* PlaceholderTests.swift */,
 				7401E1F6E8E9E9BB239D4C6F /* SettingsStoreTests.swift */,
 				B2DBBDFC0E2E639B82811308 /* ThemeTests.swift */,
 			);
@@ -279,7 +276,6 @@
 				314FEE888F15FA343A06FB4B /* ModifierKeyDetectorTests.swift in Sources */,
 				E0E95B009780BCE9D6D4BE0D /* OverlayWindowControllerTests.swift in Sources */,
 				795CDCC88A36B3C01CD66B66 /* PermissionGuideViewTests.swift in Sources */,
-				0C4B1071B012D55BBC7965EF /* PlaceholderTests.swift in Sources */,
 				F091DD8DD734D7207BA14D4C /* SettingsStoreTests.swift in Sources */,
 				0A54EC8C11BB1EB70DC8F3C3 /* ThemeTests.swift in Sources */,
 			);

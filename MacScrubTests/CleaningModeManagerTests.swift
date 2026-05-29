@@ -157,7 +157,6 @@ struct CleaningModeManagerTests {
 
 @MainActor
 final class MockEventBlocker: EventBlockerProtocol {
-    var isBlocking = false
     var onFlagsChanged: ((CGEventFlags) -> Void)?
     var onKeyActivity: (() -> Void)?
     var startCalled = false
@@ -166,15 +165,11 @@ final class MockEventBlocker: EventBlockerProtocol {
 
     func start() -> Bool {
         startCalled = true
-        if shouldSucceed {
-            isBlocking = true
-        }
         return shouldSucceed
     }
 
     func stop() {
         stopCalled = true
-        isBlocking = false
     }
 }
 
