@@ -2,102 +2,163 @@ import SwiftUI
 
 struct CleaningOverlayView: View {
     var manager: CleaningModeManager
-    @State private var showContent = false
     @State private var breathing = false
+    @State private var pulsing = false
+    @State private var showContent = false
 
-    /// Modifier squares to display, ordered consistently and filtered to the
-    /// user's configured exit keys.
-    private var orderedExitKeys: [(symbol: String, flag: ModifierKeyFlags)] {
-        let all: [(String, ModifierKeyFlags)] = [
-            ("⌘", .command), ("⌥", .option), ("⌃", .control), ("⇧", .shift),
+    /// Configured exit keys, in fixed display order, as (symbol, label, flag).
+    private var orderedExitKeys: [(symbol: String, label: String, flag: ModifierKeyFlags)] {
+        let all: [(String, String, ModifierKeyFlags)] = [
+            ("⌘", "Command", .command),
+            ("⌥", "Option", .option),
+            ("⌃", "Control", .control),
+            ("⇧", "Shift", .shift),
         ]
-        return all.filter { manager.settings.exitKeyModifiers.contains($0.1) }
+        return all.filter { manager.settings.exitKeyModifiers.contains($0.2) }
     }
 
     var body: some View {
         ZStack {
+            Rectangle().fill(.ultraThinMaterial)
             if manager.isActive {
-                VStack(spacing: 12) {
-                    Text("🧼")
-                        .font(.system(size: 42))
-                        .scaleEffect(breathing ? 1.05 : 1.0)
-                        .animation(
-                            .easeInOut(duration: 2.0).repeatForever(autoreverses: true),
-                            value: breathing
-                        )
-
-                    Text(String(localized: "overlay.title", defaultValue: "Cleaning Mode Active"))
-                        .font(.system(size: 22, weight: .semibold, design: .default))
-                        .foregroundStyle(.white)
-
-                    // Idle-reset countdown — recomputed once per second.
-                    TimelineView(.periodic(from: .now, by: 1)) { context in
-                        Text(formattedCountdown(deadline: manager.idleExitDeadline, now: context.date))
-                            .font(.system(size: 34, weight: .light))
-                            .monospacedDigit()
-                            .foregroundStyle(.white)
-                    }
-
-                    Text(String(localized: "overlay.locked", defaultValue: "Keyboard and trackpad are locked."))
-                        .font(.system(size: 13))
-                        .foregroundStyle(.white.opacity(0.55))
-                        .padding(.bottom, 8)
-
-                    Text(String(localized: "overlay.hold_to_exit", defaultValue: "Hold exit keys to exit"))
-                        .font(.system(size: 11))
-                        .foregroundStyle(.white.opacity(0.35))
-
-                    HStack(spacing: 14) {
-                        ForEach(orderedExitKeys, id: \.symbol) { entry in
-                            ModifierKeySquare(
-                                symbol: entry.symbol,
-                                isPressed: manager.modifierDetector.pressedKeys.contains(entry.flag)
-                            )
-                        }
-                    }
-                    .padding(.vertical, 4)
-
-                    // Hold-progress bar — fills 0→1 over the 3 sec while all
-                    // required keys are held; 0 otherwise.
-                    TimelineView(.animation) { context in
-                        ProgressView(value: holdProgress(at: context.date))
-                            .progressViewStyle(.linear)
-                            .tint(.white.opacity(0.7))
-                            .frame(width: 160)
-                            .scaleEffect(y: 0.6)
-                    }
-                }
-                .padding(40)
-                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 24))
-                .opacity(showContent ? 1 : 0)
-                .scaleEffect(showContent ? 1.0 : 0.98)
-                .animation(.spring(response: 0.5, dampingFraction: 0.85), value: manager.isActive)
-                .onAppear {
-                    withAnimation {
-                        showContent = true
-                        breathing = true
-                    }
-                }
-                .onChange(of: manager.isActive) { _, newValue in
-                    if !newValue {
-                        showContent = false
-                        breathing = false
-                    }
-                }
+                Color.black.opacity(0.28)
+                glassCard
+                    .opacity(showContent ? 1 : 0)
+                    .scaleEffect(showContent ? 1.0 : 0.98)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(.ultraThinMaterial)
+        .environment(\.colorScheme, .light)
+        .animation(.spring(response: 0.5, dampingFraction: 0.85), value: manager.isActive)
+        .onAppear {
+            withAnimation { showContent = true }
+            breathing = true
+            pulsing = true
+        }
+        .onChange(of: manager.isActive) { _, newValue in
+            if !newValue { showContent = false }
+        }
+    }
+
+    private var glassCard: some View {
+        VStack(spacing: 0) {
+            ring.padding(.bottom, 20)
+
+            Text(String(localized: "overlay.title", defaultValue: "Cleaning Mode Active"))
+                .font(.system(size: 30, weight: .semibold))
+                .foregroundStyle(MSColor.label)
+
+            Text(String(localized: "overlay.locked", defaultValue: "Keyboard and trackpad are locked."))
+                .font(.system(size: 16))
+                .foregroundStyle(MSColor.secondary)
+                .padding(.top, 6)
+
+            Text(instruction)
+                .font(.system(size: 14, weight: .medium))
+                .foregroundStyle(MSColor.tertiary)
+                .padding(.top, 14)
+
+            HStack(spacing: 16) {
+                ForEach(orderedExitKeys, id: \.symbol) { entry in
+                    ModifierKeySquare(
+                        symbol: entry.symbol,
+                        label: entry.label,
+                        isPressed: manager.modifierDetector.pressedKeys.contains(entry.flag)
+                    )
+                }
+            }
+            .padding(.top, 26)
+
+            statusPill.padding(.top, 24)
+        }
+        .padding(.horizontal, 52)
+        .padding(.top, 44)
+        .padding(.bottom, 40)
+        .background(
+            RoundedRectangle(cornerRadius: 30, style: .continuous).fill(.regularMaterial)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 30, style: .continuous)
+                .strokeBorder(Color.white.opacity(0.7), lineWidth: 0.5)
+        )
+        .shadow(color: Color.black.opacity(0.34), radius: 45, y: 40)
+    }
+
+    private var ring: some View {
+        Group {
+            if manager.modifierDetector.holdStartDate != nil {
+                TimelineView(.animation) { context in
+                    ringContent(
+                        progress: holdProgress(at: context.date),
+                        remaining: holdRemainingText(
+                            holdStartDate: manager.modifierDetector.holdStartDate,
+                            now: context.date,
+                            duration: manager.modifierDetector.holdDuration
+                        )
+                    )
+                }
+            } else {
+                ringContent(progress: 0, remaining: nil)
+            }
+        }
+        .frame(width: 132, height: 132)
+    }
+
+    private func ringContent(progress: Double, remaining: String?) -> some View {
+        ZStack {
+            Circle()
+                .stroke(Color.black.opacity(0.07), lineWidth: 6)
+            Circle()
+                .trim(from: 0, to: progress)
+                .stroke(MSColor.teal, style: StrokeStyle(lineWidth: 6, lineCap: .round))
+                .rotationEffect(.degrees(-90))
+
+            if let remaining {
+                VStack(spacing: 1) {
+                    Text(remaining)
+                        .font(.system(size: 40, weight: .semibold))
+                        .monospacedDigit()
+                        .foregroundStyle(MSColor.tealDeep)
+                    Text("SEC")
+                        .font(.system(size: 10, weight: .bold))
+                        .tracking(2)
+                        .foregroundStyle(MSColor.tertiary)
+                }
+            } else {
+                Image(systemName: "sparkles")
+                    .font(.system(size: 46))
+                    .foregroundStyle(MSColor.tealStrong)
+                    .scaleEffect(breathing ? 1.05 : 1.0)
+                    .animation(.easeInOut(duration: 2.0).repeatForever(autoreverses: true), value: breathing)
+            }
+        }
+    }
+
+    private var statusPill: some View {
+        HStack(spacing: 9) {
+            Circle()
+                .fill(MSColor.teal)
+                .frame(width: 8, height: 8)
+                .opacity(pulsing ? 1 : 0.4)
+                .animation(.easeInOut(duration: 1.2).repeatForever(autoreverses: true), value: pulsing)
+            Text(String(localized: "overlay.input_disabled", defaultValue: "Input is disabled"))
+                .font(.system(size: 13.5, weight: .medium))
+                .foregroundStyle(MSColor.secondary)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 8)
+        .background(Capsule().fill(Color.black.opacity(0.04)))
+    }
+
+    private var instruction: String {
+        let secs = Int(manager.modifierDetector.holdDuration)
+        return String(format: String(localized: "overlay.instruction",
+                                      defaultValue: "Hold all modifier keys for %lld seconds to exit."), secs)
     }
 
     private func holdProgress(at date: Date) -> Double {
         guard let start = manager.modifierDetector.holdStartDate else { return 0 }
         let elapsed = date.timeIntervalSince(start)
         return min(1, max(0, elapsed / manager.modifierDetector.holdDuration))
-    }
-
-    private func formattedCountdown(deadline: Date, now: Date) -> String {
-        let remaining = max(0, Int(deadline.timeIntervalSince(now).rounded(.up)))
-        return String(format: "%d:%02d", remaining / 60, remaining % 60)
     }
 }

@@ -80,19 +80,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Settings..."
+            "value": "Preferences…"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ayarlar..."
+            "value": "Tercihler…"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "设置..."
+            "value": "偏好设置…"
           }
         }
       }
@@ -476,19 +476,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Exit cleaning mode when lid is opened"
+            "value": "Exit on Lid Open"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kapak açıldığında temizlik modundan çık"
+            "value": "Kapak Açılınca Çık"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "打开背盖时退出清洁模式"
+            "value": "开盖时退出"
           }
         }
       }
@@ -841,6 +841,204 @@
           "stringUnit": {
             "state": "translated",
             "value": "稍后"
+          }
+        }
+      }
+    },
+    "idle.subtitle": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clean your Mac safely."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mac'inizi güvenle temizleyin."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "安全地清洁你的 Mac。"
+          }
+        }
+      }
+    },
+    "idle.support": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keyboard and trackpad input will be temporarily blocked."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Klavye ve trackpad girişi geçici olarak engellenecek."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "键盘和触控板输入将被暂时阻止。"
+          }
+        }
+      }
+    },
+    "preferences.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Preferences"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tercihler"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "偏好设置"
+          }
+        }
+      }
+    },
+    "preferences.autoterm": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auto-terminate"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Otomatik sonlandır"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自动结束"
+          }
+        }
+      }
+    },
+    "preferences.autoterm_sub": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "End cleaning mode on its own"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temizlik modunu kendiliğinden bitir"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自动结束清洁模式"
+          }
+        }
+      }
+    },
+    "preferences.exit_keys": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keys required to exit"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çıkış için gereken tuşlar"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "退出所需的按键"
+          }
+        }
+      }
+    },
+    "preferences.exit_keys_hint": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hold the selected keys together for %lld seconds to unlock. At least one key is required."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kilidi açmak için seçili tuşları birlikte %lld saniye basılı tutun. En az bir tuş gereklidir."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "同时按住所选按键 %lld 秒以解锁。至少需要一个按键。"
+          }
+        }
+      }
+    },
+    "overlay.input_disabled": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Input is disabled"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Giriş devre dışı"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "输入已禁用"
+          }
+        }
+      }
+    },
+    "overlay.instruction": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hold all modifier keys for %lld seconds to exit."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çıkmak için tüm değiştirici tuşları %lld saniye basılı tutun."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "按住所有修饰键 %lld 秒以退出。"
           }
         }
       }

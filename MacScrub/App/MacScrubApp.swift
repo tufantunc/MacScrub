@@ -48,6 +48,7 @@ struct MacScrubApp: App {
     @State private var eventBlocker: EventBlocker
     @State private var lidMonitor: LidMonitor
     @State private var manager: CleaningModeManager
+    @State private var nav: HubNavigation
     private let overlayController = OverlayWindowController()
 
     init() {
@@ -59,15 +60,17 @@ struct MacScrubApp: App {
             eventBlocker: eventBlocker,
             lidMonitor: lidMonitor
         )
+        let nav = HubNavigation()
         self._settings = State(initialValue: settings)
         self._eventBlocker = State(initialValue: eventBlocker)
         self._lidMonitor = State(initialValue: lidMonitor)
         self._manager = State(initialValue: manager)
+        self._nav = State(initialValue: nav)
     }
 
     var body: some Scene {
         Window("MacScrub", id: "main") {
-            MainWindowView(manager: manager, settings: settings)
+            MainWindowView(manager: manager, settings: settings, nav: nav)
                 .onAppear {
                     manager.overlayController = overlayController
                     NSApp.activate(ignoringOtherApps: true)
@@ -76,11 +79,11 @@ struct MacScrubApp: App {
         .windowResizability(.contentSize)
 
         MenuBarExtra {
-            MenuBarView(manager: manager)
+            MenuBarView(manager: manager, settings: settings, nav: nav)
         } label: {
             Image(systemName: "sparkles")
                 .symbolRenderingMode(.hierarchical)
-                .foregroundStyle(manager.isActive ? .blue : .secondary)
+                .foregroundStyle(manager.isActive ? AnyShapeStyle(MSColor.teal) : AnyShapeStyle(.secondary))
         }
         .menuBarExtraStyle(.menu)
     }
