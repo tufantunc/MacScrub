@@ -1,4 +1,4 @@
-import SwiftUI
+import Foundation
 
 enum AppLanguage: String, CaseIterable, Identifiable, Codable {
     case system

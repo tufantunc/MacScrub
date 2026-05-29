@@ -1,4 +1,4 @@
-import SwiftUI
+import Observation
 
 enum HubView: Equatable {
     case main

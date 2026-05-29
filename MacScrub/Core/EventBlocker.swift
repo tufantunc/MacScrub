@@ -1,5 +1,4 @@
 import CoreGraphics
-import ApplicationServices
 import AppKit
 
 @MainActor
