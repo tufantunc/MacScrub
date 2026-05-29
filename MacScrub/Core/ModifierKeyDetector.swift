@@ -2,12 +2,14 @@ import Foundation
 import CoreGraphics
 
 @MainActor
+@Observable
 final class ModifierKeyDetector {
     let requiredKeys: ModifierKeyFlags
     let holdDuration: TimeInterval
     var onAllKeysHeld: (() -> Void)?
 
     private(set) var pressedKeys: ModifierKeyFlags = []
+    private(set) var holdStartDate: Date?
     private var holdTimer: Task<Void, Never>?
 
     init(requiredKeys: ModifierKeyFlags, holdDuration: TimeInterval = 3.0) {
@@ -27,15 +29,18 @@ final class ModifierKeyDetector {
         let allHeld = requiredKeys.isSubset(of: newPressed)
 
         if allHeld {
+            if holdStartDate == nil { holdStartDate = Date() }
             startHoldTimer()
         } else {
             cancelHoldTimer()
+            holdStartDate = nil
         }
     }
 
     func reset() {
         pressedKeys = []
         cancelHoldTimer()
+        holdStartDate = nil
     }
 
     private func startHoldTimer() {
@@ -45,6 +50,7 @@ final class ModifierKeyDetector {
             guard !Task.isCancelled else { return }
             self?.onAllKeysHeld?()
             self?.holdTimer = nil
+            self?.holdStartDate = nil
         }
     }
 
