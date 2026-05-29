@@ -162,7 +162,7 @@ struct MainWindowView: View {
     }
 
     private var holdHint: String {
-        String(localized: "overlay.hold_to_exit", defaultValue: "Hold all modifiers to exit")
+        String(localized: "overlay.hold_to_exit", defaultValue: "Hold exit keys to exit")
     }
 
     private func startCleaning() {
