@@ -146,19 +146,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hold all modifiers to exit"
+            "value": "Hold exit keys to exit"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Çıkmak için tüm modifier tuşlarını basılı tut"
+            "value": "Çıkış tuşlarını basılı tut"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "按住所有修饰键退出"
+            "value": "按住退出键以退出"
           }
         }
       }
