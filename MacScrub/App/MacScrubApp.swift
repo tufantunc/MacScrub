@@ -83,7 +83,7 @@ struct MacScrubApp: App {
         } label: {
             Image(systemName: "sparkles")
                 .symbolRenderingMode(.hierarchical)
-                .foregroundStyle(manager.isActive ? .blue : .secondary)
+                .foregroundStyle(manager.isActive ? AnyShapeStyle(MSColor.teal) : AnyShapeStyle(.secondary))
         }
         .menuBarExtraStyle(.menu)
     }
