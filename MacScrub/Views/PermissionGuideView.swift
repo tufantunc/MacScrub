@@ -45,18 +45,20 @@ struct PermissionGuideView: View {
         .frame(width: 380)
     }
 
-    static func showIfNeeded() {
-        guard AXIsProcessTrusted() == false else { return }
-
-        let panel = NSPanel(
-            contentRect: NSRect(x: 0, y: 0, width: 380, height: 340),
-            styleMask: [.titled, .closable],
-            backing: .buffered,
-            defer: false
-        )
+    static func makePanel() -> NSPanel {
+        let controller = NSHostingController(rootView: PermissionGuideView())
+        let panel = NSPanel(contentViewController: controller)
+        panel.styleMask = [.titled, .closable]
         panel.title = "MacScrub"
         panel.isReleasedWhenClosed = false
-        panel.contentView = NSHostingView(rootView: PermissionGuideView())
+        panel.layoutIfNeeded()
+        panel.setContentSize(controller.view.fittingSize)
+        return panel
+    }
+
+    static func showIfNeeded() {
+        guard AXIsProcessTrusted() == false else { return }
+        let panel = makePanel()
         panel.center()
         panel.makeKeyAndOrderFront(nil)
         NSApp.activate(ignoringOtherApps: true)

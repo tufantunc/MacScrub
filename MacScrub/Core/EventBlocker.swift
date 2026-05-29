@@ -8,6 +8,7 @@ final class EventBlocker: EventBlockerProtocol {
     private var runLoopSource: CFRunLoopSource?
     private(set) var isBlocking = false
     var onFlagsChanged: ((CGEventFlags) -> Void)?
+    var onKeyActivity: (() -> Void)?
 
     func start() -> Bool {
         guard !isBlocking else { return true }
@@ -81,8 +82,16 @@ private func eventTapCallback(
         let flags = event.flags
         Task { @MainActor in
             blocker.onFlagsChanged?(flags)
+            blocker.onKeyActivity?()
         }
         return Unmanaged.passRetained(event)
+    }
+
+    if type == .keyDown || type == .keyUp {
+        Task { @MainActor in
+            blocker.onKeyActivity?()
+        }
+        return nil
     }
 
     let mouseLocation = NSEvent.mouseLocation

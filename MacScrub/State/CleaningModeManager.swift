@@ -7,10 +7,11 @@ import ApplicationServices
 @Observable
 final class CleaningModeManager {
     private(set) var isActive = false
+    private(set) var idleExitDeadline: Date = .distantPast
     private(set) var modifierDetector: ModifierKeyDetector
     let settings: SettingsStore
     private var eventBlocker: EventBlockerProtocol
-    private let lidMonitor: LidMonitor
+    private let lidMonitor: LidMonitorProtocol
     private var timeoutTask: Task<Void, Never>?
     private let exitSoundID: SystemSoundID = 1057
 
@@ -19,18 +20,14 @@ final class CleaningModeManager {
     }
     weak var overlayController: OverlayWindowController?
 
-    init(settings: SettingsStore, eventBlocker: EventBlockerProtocol, lidMonitor: LidMonitor) {
+    init(settings: SettingsStore, eventBlocker: EventBlockerProtocol, lidMonitor: LidMonitorProtocol) {
         self.settings = settings
         self.eventBlocker = eventBlocker
         self.lidMonitor = lidMonitor
-        self.modifierDetector = ModifierKeyDetector(
-            requiredKeys: settings.exitKeyModifiers,
-            holdDuration: 3.0
-        )
-
-        self.modifierDetector.onAllKeysHeld = { [weak self] in
-            self?.deactivate()
-        }
+        // Minimal placeholder so the non-optional property is set before
+        // makeDetector() (an instance method) can be called.
+        self.modifierDetector = ModifierKeyDetector(requiredKeys: [])
+        self.modifierDetector = makeDetector()
 
         self.lidMonitor.onLidOpen = { [weak self] in
             guard let self else { return }
@@ -40,19 +37,27 @@ final class CleaningModeManager {
         }
     }
 
-    func activate() {
-        guard !isActive else { return }
-
-        modifierDetector = ModifierKeyDetector(
+    private func makeDetector() -> ModifierKeyDetector {
+        let detector = ModifierKeyDetector(
             requiredKeys: settings.exitKeyModifiers,
             holdDuration: 3.0
         )
-        modifierDetector.onAllKeysHeld = { [weak self] in
+        detector.onAllKeysHeld = { [weak self] in
             self?.deactivate()
         }
+        return detector
+    }
+
+    func activate() {
+        guard !isActive else { return }
+
+        modifierDetector = makeDetector()
 
         eventBlocker.onFlagsChanged = { [weak self] flags in
             self?.modifierDetector.updateFlags(flags)
+        }
+        eventBlocker.onKeyActivity = { [weak self] in
+            self?.noteActivity()
         }
 
         let success = eventBlocker.start()
@@ -62,13 +67,15 @@ final class CleaningModeManager {
         }
 
         isActive = true
+        lidMonitor.start()
         overlayController?.show(manager: self)
-        startTimeout()
+        startIdleTimeout()
     }
 
     func deactivate() {
         guard isActive else { return }
         eventBlocker.stop()
+        lidMonitor.stop()
         modifierDetector.reset()
         timeoutTask?.cancel()
         timeoutTask = nil
@@ -77,13 +84,24 @@ final class CleaningModeManager {
         AudioServicesPlaySystemSound(exitSoundID)
     }
 
-    private func startTimeout() {
+    func noteActivity() {
+        guard isActive else { return }
+        idleExitDeadline = .now + TimeInterval(settings.timeoutDuration)
+    }
+
+    private func startIdleTimeout() {
         timeoutTask?.cancel()
+        idleExitDeadline = .now + TimeInterval(settings.timeoutDuration)
         timeoutTask = Task { [weak self] in
             guard let self else { return }
-            try? await Task.sleep(for: .seconds(Double(self.settings.timeoutDuration)))
-            guard !Task.isCancelled else { return }
-            self.deactivate()
+            while !Task.isCancelled {
+                let remaining = self.idleExitDeadline.timeIntervalSinceNow
+                if remaining <= 0 {
+                    self.deactivate()
+                    return
+                }
+                try? await Task.sleep(for: .seconds(remaining))
+            }
         }
     }
 }

@@ -74,4 +74,48 @@ struct ModifierKeyDetectorTests {
         #expect(detector.pressedKeys.contains(.control))
         #expect(!detector.pressedKeys.contains(.shift))
     }
+
+    @Test("Hold start date is nil before all required keys are held")
+    func testHoldStartDateNilInitially() {
+        let detector = ModifierKeyDetector(requiredKeys: [.command, .shift], holdDuration: 3.0)
+        detector.updateFlags(.maskCommand)
+        #expect(detector.holdStartDate == nil)
+    }
+
+    @Test("Hold start date is set when all required keys are held")
+    func testHoldStartDateSetWhenAllHeld() {
+        let detector = ModifierKeyDetector(requiredKeys: [.command, .shift], holdDuration: 3.0)
+        detector.updateFlags([.maskCommand, .maskShift])
+        let start = detector.holdStartDate
+        #expect(start != nil)
+        if let start { #expect(abs(start.timeIntervalSinceNow) < 0.5) }
+    }
+
+    @Test("Releasing a required key clears hold start date")
+    func testHoldStartDateClearedOnRelease() {
+        let detector = ModifierKeyDetector(requiredKeys: [.command, .shift], holdDuration: 3.0)
+        detector.updateFlags([.maskCommand, .maskShift])
+        #expect(detector.holdStartDate != nil)
+        detector.updateFlags(.maskCommand)
+        #expect(detector.holdStartDate == nil)
+    }
+
+    @Test("Reset clears hold start date")
+    func testHoldStartDateClearedByReset() {
+        let detector = ModifierKeyDetector(requiredKeys: [.command, .shift], holdDuration: 3.0)
+        detector.updateFlags([.maskCommand, .maskShift])
+        detector.reset()
+        #expect(detector.holdStartDate == nil)
+    }
+
+    @Test("Hold start date is stable across repeated full-press events")
+    func testHoldStartDateStableOnRepeatedFullPress() async {
+        let detector = ModifierKeyDetector(requiredKeys: [.command, .shift], holdDuration: 3.0)
+        detector.updateFlags([.maskCommand, .maskShift])
+        let first = detector.holdStartDate
+        #expect(first != nil)
+        try? await Task.sleep(for: .milliseconds(50))
+        detector.updateFlags([.maskCommand, .maskShift])
+        #expect(detector.holdStartDate == first)
+    }
 }

@@ -4,16 +4,19 @@ import SwiftUI
 class OverlayWindowController {
     var overlayWindow: NSWindow?
 
-    func show(manager: CleaningModeManager) {
-        guard overlayWindow == nil else { return }
-        let screen = NSScreen.main!
+    func makeOverlayWindow(manager: CleaningModeManager) -> NSWindow? {
+        guard let screen = NSScreen.main else { return nil }
         let window = NSWindow(
             contentRect: screen.frame,
             styleMask: [.borderless],
             backing: .buffered,
             defer: false,
-            screen: NSScreen.main
+            screen: screen
         )
+        // This controller owns the window via `overlayWindow` (ARC). Without
+        // this, NSWindow defaults to releasing itself on close, which would
+        // double-free when ARC also releases it → EXC_BAD_ACCESS on deactivate.
+        window.isReleasedWhenClosed = false
         window.level = .statusBar + 1
         window.isOpaque = false
         window.backgroundColor = .clear
@@ -23,6 +26,12 @@ class OverlayWindowController {
         let view = NSHostingView(rootView: CleaningOverlayView(manager: manager))
         view.frame = screen.frame
         window.contentView = view
+        return window
+    }
+
+    func show(manager: CleaningModeManager) {
+        guard overlayWindow == nil else { return }
+        guard let window = makeOverlayWindow(manager: manager) else { return }
         window.makeKeyAndOrderFront(nil)
         overlayWindow = window
     }
@@ -35,9 +44,9 @@ class OverlayWindowController {
 
 @main
 struct MacScrubApp: App {
-    @State private var settings = SettingsStore()
-    @State private var eventBlocker = EventBlocker()
-    @State private var lidMonitor = LidMonitor()
+    @State private var settings: SettingsStore
+    @State private var eventBlocker: EventBlocker
+    @State private var lidMonitor: LidMonitor
     @State private var manager: CleaningModeManager
     private let overlayController = OverlayWindowController()
 
@@ -57,20 +66,22 @@ struct MacScrubApp: App {
     }
 
     var body: some Scene {
-        MenuBarExtra {
-            MenuBarView(manager: manager)
+        Window("MacScrub", id: "main") {
+            MainWindowView(manager: manager, settings: settings)
                 .onAppear {
                     manager.overlayController = overlayController
+                    NSApp.activate(ignoringOtherApps: true)
                 }
+        }
+        .windowResizability(.contentSize)
+
+        MenuBarExtra {
+            MenuBarView(manager: manager)
         } label: {
             Image(systemName: "sparkles")
                 .symbolRenderingMode(.hierarchical)
                 .foregroundStyle(manager.isActive ? .blue : .secondary)
         }
-        .menuBarExtraStyle(.window)
-
-        Settings {
-            SettingsView(settings: settings)
-        }
+        .menuBarExtraStyle(.menu)
     }
 }
