@@ -4,13 +4,19 @@ import ApplicationServices
 struct MainWindowView: View {
     @Bindable var manager: CleaningModeManager
     @Bindable var settings: SettingsStore
+    @Bindable var nav: HubNavigation
 
-    @State private var showExitKeys = false
     @State private var showRestartAlert = false
 
     var body: some View {
-        idleView
-        .frame(width: 360)
+        Group {
+            switch nav.view {
+            case .main: idleView
+            case .preferences: preferencesView
+            }
+        }
+        .frame(width: 392)
+        .environment(\.colorScheme, .light)
         .alert(
             String(localized: "language.restart_title", defaultValue: "Restart Required"),
             isPresented: $showRestartAlert
@@ -25,28 +31,21 @@ struct MainWindowView: View {
         }
     }
 
+    // MARK: Idle
+
     private var idleView: some View {
         VStack(spacing: 0) {
-            // Hero
-            VStack(spacing: 10) {
-                RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .fill(LinearGradient(colors: [Color(red: 0.37, green: 0.63, blue: 1.0),
-                                                  Color(red: 0.04, green: 0.42, blue: 1.0)],
-                                         startPoint: .top, endPoint: .bottom))
-                    .frame(width: 62, height: 62)
-                    .overlay(Text("✨").font(.system(size: 30)))
-                    .shadow(color: .blue.opacity(0.35), radius: 8, y: 4)
+            appIcon.padding(.top, 30)
 
-                Text("MacScrub")
-                    .font(.system(size: 20, weight: .bold))
-                Text(String(localized: "window.subtitle",
-                            defaultValue: "Clean your keyboard and trackpad safely"))
-                    .font(.system(size: 12))
-                    .foregroundStyle(.secondary)
-            }
-            .padding(.top, 30)
+            Text("MacScrub")
+                .font(.system(size: 22, weight: .semibold))
+                .foregroundStyle(MSColor.label)
+                .padding(.top, 16)
+            Text(String(localized: "idle.subtitle", defaultValue: "Clean your Mac safely."))
+                .font(.system(size: 14.5))
+                .foregroundStyle(MSColor.secondary)
+                .padding(.top, 6)
 
-            // Primary action
             Button(action: startCleaning) {
                 Text(String(localized: "menu.start_cleaning", defaultValue: "Start Cleaning Mode"))
                     .font(.system(size: 15, weight: .semibold))
@@ -54,59 +53,124 @@ struct MainWindowView: View {
             }
             .controlSize(.large)
             .buttonStyle(.borderedProminent)
-            .padding(.horizontal, 26)
+            .tint(MSColor.teal)
+            .padding(.horizontal, 34)
             .padding(.top, 22)
 
-            Text(holdHint)
-                .font(.system(size: 11))
-                .foregroundStyle(.tertiary)
-                .padding(.top, 8)
-
-            // Settings card
-            settingsCard
-                .padding(.horizontal, 26)
-                .padding(.top, 22)
-
-            Button(String(localized: "settings.about", defaultValue: "About")) {
-                showAbout()
+            Button(String(localized: "menu.settings", defaultValue: "Preferences…")) {
+                nav.view = .preferences
             }
-            .buttonStyle(.link)
-            .font(.system(size: 11))
-            .padding(.vertical, 16)
+            .buttonStyle(.plain)
+            .font(.system(size: 13.5, weight: .medium))
+            .foregroundStyle(MSColor.label)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 9)
+            .background(Color.black.opacity(0.045), in: RoundedRectangle(cornerRadius: 8))
+            .padding(.horizontal, 34)
+            .padding(.top, 10)
+
+            Text(String(localized: "idle.support",
+                        defaultValue: "Keyboard and trackpad input will be temporarily blocked."))
+                .font(.system(size: 12))
+                .foregroundStyle(MSColor.tertiary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 34)
+                .padding(.top, 16)
+                .padding(.bottom, 30)
         }
     }
 
-    private var settingsCard: some View {
-        VStack(spacing: 0) {
-            // Timeout
-            HStack {
-                Label(String(localized: "settings.auto_exit_after", defaultValue: "Auto-exit after:"),
-                      systemImage: "timer")
-                Spacer()
-                Text(String(localized: "\(settings.timeoutDuration) seconds"))
-                    .foregroundStyle(.secondary)
-                    .monospacedDigit()
-                Stepper(value: $settings.timeoutDuration, in: 30...300, step: 15) {
-                    EmptyView()
+    private var appIcon: some View {
+        RoundedRectangle(cornerRadius: 16, style: .continuous)
+            .fill(LinearGradient(colors: [Color.white, Color(white: 0.93)],
+                                 startPoint: .top, endPoint: .bottom))
+            .frame(width: 66, height: 66)
+            .overlay(
+                Image(systemName: "sparkles")
+                    .font(.system(size: 34))
+                    .foregroundStyle(MSColor.tealStrong)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    .strokeBorder(Color.black.opacity(0.06), lineWidth: 0.5)
+            )
+            .shadow(color: MSColor.tealGlow.opacity(0.5), radius: 8, y: 4)
+    }
+
+    // MARK: Preferences
+
+    private var preferencesView: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            HStack(spacing: 4) {
+                Button {
+                    nav.view = .main
+                } label: {
+                    Image(systemName: "chevron.left")
+                        .font(.system(size: 15, weight: .semibold))
+                        .foregroundStyle(MSColor.secondary)
                 }
-                .labelsHidden()
+                .buttonStyle(.plain)
+                Text(String(localized: "preferences.title", defaultValue: "Preferences"))
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundStyle(MSColor.label)
             }
-            .padding(12)
-            Divider().padding(.leading, 12)
+            .padding(.bottom, 16)
+
+            prefsGroup
+            exitKeysSection.padding(.top, 18)
+        }
+        .padding(.horizontal, 30)
+        .padding(.top, 20)
+        .padding(.bottom, 28)
+        .onChange(of: settings.appLanguage) { oldValue, newValue in
+            guard oldValue != newValue else { return }
+            showRestartAlert = true
+        }
+    }
+
+    private var prefsGroup: some View {
+        VStack(spacing: 0) {
+            // Auto-terminate (slider 30–300)
+            VStack(alignment: .leading, spacing: 8) {
+                HStack {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(String(localized: "preferences.autoterm", defaultValue: "Auto-terminate"))
+                            .font(.system(size: 13.5, weight: .medium))
+                            .foregroundStyle(MSColor.label)
+                        Text(String(localized: "preferences.autoterm_sub", defaultValue: "End cleaning mode on its own"))
+                            .font(.system(size: 11))
+                            .foregroundStyle(MSColor.tertiary)
+                    }
+                    Spacer()
+                    Text(String(localized: "\(settings.timeoutDuration) seconds"))
+                        .font(.system(size: 12))
+                        .monospacedDigit()
+                        .foregroundStyle(MSColor.secondary)
+                }
+                Slider(value: Binding(
+                    get: { Double(settings.timeoutDuration) },
+                    set: { settings.timeoutDuration = Int($0) }
+                ), in: 30...300, step: 15)
+                .tint(MSColor.teal)
+            }
+            .padding(13)
+            Divider().padding(.leading, 13)
 
             // Lid
             Toggle(isOn: $settings.exitOnLidOpen) {
-                Label(String(localized: "settings.exit_on_lid_open",
-                             defaultValue: "Exit cleaning mode when lid is opened"),
-                      systemImage: "laptopcomputer")
+                Text(String(localized: "settings.exit_on_lid_open", defaultValue: "Exit on Lid Open"))
+                    .font(.system(size: 13.5, weight: .medium))
+                    .foregroundStyle(MSColor.label)
             }
-            .padding(12)
-            Divider().padding(.leading, 12)
+            .tint(MSColor.teal)
+            .padding(13)
+            Divider().padding(.leading, 13)
 
             // Language
             HStack {
-                Label(String(localized: "settings.language", defaultValue: "Language"),
-                      systemImage: "globe")
+                Text(String(localized: "settings.language", defaultValue: "Language"))
+                    .font(.system(size: 13.5, weight: .medium))
+                    .foregroundStyle(MSColor.label)
                 Spacer()
                 Picker("", selection: $settings.appLanguage) {
                     ForEach(AppLanguage.allCases) { lang in
@@ -117,52 +181,64 @@ struct MainWindowView: View {
                 .pickerStyle(.menu)
                 .fixedSize()
             }
-            .padding(12)
-            Divider().padding(.leading, 12)
+            .padding(13)
+        }
+        .background(Color.black.opacity(0.025), in: RoundedRectangle(cornerRadius: 11, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 11, style: .continuous)
+            .strokeBorder(Color.black.opacity(0.07), lineWidth: 0.5))
+    }
 
-            // Exit keys (expandable)
-            DisclosureGroup(isExpanded: $showExitKeys) {
-                exitKeysToggles.padding(.top, 6)
-            } label: {
-                Label(String(localized: "settings.exit_keys", defaultValue: "Exit Keys"),
-                      systemImage: "keyboard")
+    private var exitKeysSection: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text(String(localized: "preferences.exit_keys", defaultValue: "Keys required to exit"))
+                .font(.system(size: 13.5, weight: .medium))
+                .foregroundStyle(MSColor.label)
+
+            HStack(spacing: 8) {
+                keyChip("⌘", "Command", .command)
+                keyChip("⌥", "Option", .option)
+                keyChip("⌃", "Control", .control)
+                keyChip("⇧", "Shift", .shift)
             }
-            .padding(12)
-        }
-        .background(.background, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous)
-            .strokeBorder(.quaternary, lineWidth: 1))
-        .onChange(of: settings.appLanguage) { oldValue, newValue in
-            guard oldValue != newValue else { return }
-            showRestartAlert = true
+
+            Text(exitKeysHint)
+                .font(.system(size: 11))
+                .foregroundStyle(MSColor.tertiary)
         }
     }
 
-    private var exitKeysToggles: some View {
-        HStack(spacing: 12) {
-            modifierToggle("⌘", .command)
-            modifierToggle("⌥", .option)
-            modifierToggle("⌃", .control)
-            modifierToggle("⇧", .shift)
-        }
-    }
-
-    private func modifierToggle(_ symbol: String, _ key: ModifierKeyFlags) -> some View {
-        Toggle(symbol, isOn: Binding(
-            get: { settings.exitKeyModifiers.contains(key) },
-            set: { isOn in
-                let allowed = settings.exitKeyModifiers.count > 1 || isOn
-                guard allowed else { return }
-                settings.exitKeyModifiers = isOn
-                    ? settings.exitKeyModifiers.union(key)
-                    : settings.exitKeyModifiers.subtracting(key)
+    private func keyChip(_ symbol: String, _ label: String, _ key: ModifierKeyFlags) -> some View {
+        let on = settings.exitKeyModifiers.contains(key)
+        return Button {
+            let allowed = settings.exitKeyModifiers.count > 1 || !on
+            guard allowed else { return }
+            settings.exitKeyModifiers = on
+                ? settings.exitKeyModifiers.subtracting(key)
+                : settings.exitKeyModifiers.union(key)
+        } label: {
+            VStack(spacing: 5) {
+                Text(symbol)
+                    .font(.system(size: 21, weight: .light))
+                    .foregroundStyle(on ? MSColor.tealDeep : MSColor.label)
+                Text(label.uppercased())
+                    .font(.system(size: 9.5, weight: .semibold))
+                    .tracking(0.3)
+                    .foregroundStyle(on ? MSColor.tealDeep : MSColor.tertiary)
             }
-        ))
-        .toggleStyle(.checkbox)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 10)
+            .background((on ? MSColor.tealTint : Color.white.opacity(0.7)),
+                        in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .strokeBorder(on ? MSColor.teal : Color.black.opacity(0.08), lineWidth: 1))
+        }
+        .buttonStyle(.plain)
     }
 
-    private var holdHint: String {
-        String(localized: "overlay.hold_to_exit", defaultValue: "Hold exit keys to exit")
+    private var exitKeysHint: String {
+        let secs = Int(manager.modifierDetector.holdDuration)
+        return String(format: String(localized: "preferences.exit_keys_hint",
+            defaultValue: "Hold the selected keys together for %lld seconds to unlock. At least one key is required."), secs)
     }
 
     private func startCleaning() {
@@ -172,10 +248,5 @@ struct MainWindowView: View {
         } else {
             PermissionGuideView.showIfNeeded()
         }
-    }
-
-    private func showAbout() {
-        NSApplication.shared.orderFrontStandardAboutPanel(nil)
-        NSApp.activate(ignoringOtherApps: true)
     }
 }
