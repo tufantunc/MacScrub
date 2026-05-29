@@ -7,6 +7,7 @@ import ApplicationServices
 @Observable
 final class CleaningModeManager {
     private(set) var isActive = false
+    private(set) var idleExitDeadline: Date = .distantPast
     private(set) var modifierDetector: ModifierKeyDetector
     let settings: SettingsStore
     private var eventBlocker: EventBlockerProtocol
@@ -55,6 +56,9 @@ final class CleaningModeManager {
         eventBlocker.onFlagsChanged = { [weak self] flags in
             self?.modifierDetector.updateFlags(flags)
         }
+        eventBlocker.onKeyActivity = { [weak self] in
+            self?.noteActivity()
+        }
 
         let success = eventBlocker.start()
         guard success else {
@@ -65,7 +69,7 @@ final class CleaningModeManager {
         isActive = true
         lidMonitor.start()
         overlayController?.show(manager: self)
-        startTimeout()
+        startIdleTimeout()
     }
 
     func deactivate() {
@@ -80,13 +84,24 @@ final class CleaningModeManager {
         AudioServicesPlaySystemSound(exitSoundID)
     }
 
-    private func startTimeout() {
+    func noteActivity() {
+        guard isActive else { return }
+        idleExitDeadline = .now + TimeInterval(settings.timeoutDuration)
+    }
+
+    private func startIdleTimeout() {
         timeoutTask?.cancel()
+        idleExitDeadline = .now + TimeInterval(settings.timeoutDuration)
         timeoutTask = Task { [weak self] in
             guard let self else { return }
-            try? await Task.sleep(for: .seconds(Double(self.settings.timeoutDuration)))
-            guard !Task.isCancelled else { return }
-            self.deactivate()
+            while !Task.isCancelled {
+                let remaining = self.idleExitDeadline.timeIntervalSinceNow
+                if remaining <= 0 {
+                    self.deactivate()
+                    return
+                }
+                try? await Task.sleep(for: .seconds(remaining))
+            }
         }
     }
 }

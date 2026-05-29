@@ -103,6 +103,56 @@ struct CleaningModeManagerTests {
         lid.simulateLidOpen()
         #expect(manager.isActive == true)
     }
+
+    @Test("Activate schedules idle exit deadline approximately at timeoutDuration ahead")
+    func testActivateSchedulesIdleDeadline() {
+        let defaults = UserDefaults(suiteName: UUID().uuidString)!
+        let settings = SettingsStore(defaults: defaults)
+        settings.timeoutDuration = 120
+        let manager = CleaningModeManager(
+            settings: settings,
+            eventBlocker: MockEventBlocker(),
+            lidMonitor: MockLidMonitor()
+        )
+        manager.activate()
+        let remaining = manager.idleExitDeadline.timeIntervalSinceNow
+        #expect(abs(remaining - 120) < 1.0)
+    }
+
+    @Test("noteActivity pushes idle deadline forward")
+    func testNoteActivityPushesDeadline() async {
+        let defaults = UserDefaults(suiteName: UUID().uuidString)!
+        let settings = SettingsStore(defaults: defaults)
+        settings.timeoutDuration = 120
+        let manager = CleaningModeManager(
+            settings: settings,
+            eventBlocker: MockEventBlocker(),
+            lidMonitor: MockLidMonitor()
+        )
+        manager.activate()
+        let firstDeadline = manager.idleExitDeadline
+        try? await Task.sleep(for: .milliseconds(50))
+        manager.noteActivity()
+        #expect(manager.idleExitDeadline > firstDeadline)
+    }
+
+    @Test("Key activity from event blocker pushes idle deadline forward")
+    func testEventBlockerActivityPushesDeadline() async {
+        let defaults = UserDefaults(suiteName: UUID().uuidString)!
+        let settings = SettingsStore(defaults: defaults)
+        settings.timeoutDuration = 120
+        let blocker = MockEventBlocker()
+        let manager = CleaningModeManager(
+            settings: settings,
+            eventBlocker: blocker,
+            lidMonitor: MockLidMonitor()
+        )
+        manager.activate()
+        let firstDeadline = manager.idleExitDeadline
+        try? await Task.sleep(for: .milliseconds(50))
+        blocker.onKeyActivity?()
+        #expect(manager.idleExitDeadline > firstDeadline)
+    }
 }
 
 @MainActor
