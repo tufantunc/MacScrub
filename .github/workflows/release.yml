@@ -5,6 +5,10 @@ on:
     tags:
       - 'v*'
 
+# Allow the workflow's GITHUB_TOKEN to create the GitHub Release + upload assets.
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: macos-15
