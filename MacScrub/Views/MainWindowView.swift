@@ -1,4 +1,5 @@
 import SwiftUI
+import AppKit
 import ApplicationServices
 
 struct MainWindowView: View {
@@ -16,10 +17,11 @@ struct MainWindowView: View {
             }
         }
         .frame(width: 392)
-        // Light, translucent frosted panel (matches the mockup). The window's own
-        // backing is dark in macOS Dark mode, so without this fill the forced-light
-        // dark text would sit on a dark surface and be unreadable.
-        .background(.regularMaterial)
+        // Genuinely translucent, light frosted panel (matches the mockup). A plain
+        // SwiftUI material would only blur the opaque window background and read as
+        // flat gray; this backs the window with a behind-window NSVisualEffectView
+        // and makes the host window non-opaque so the desktop shows through.
+        .background(WindowTranslucencyBackground())
         .environment(\.colorScheme, .light)
         .alert(
             String(localized: "language.restart_title", defaultValue: "Restart Required"),
@@ -253,6 +255,29 @@ struct MainWindowView: View {
             manager.activate()
         } else {
             PermissionGuideView.showIfNeeded()
+        }
+    }
+}
+
+/// A light, behind-window frosted backdrop that also makes its host window
+/// non-opaque so the desktop is visible through it (true translucency rather
+/// than a flat gray material over an opaque window).
+private struct WindowTranslucencyBackground: NSViewRepresentable {
+    func makeNSView(context: Context) -> NSVisualEffectView {
+        let view = NSVisualEffectView()
+        view.material = .popover          // light, frosted
+        view.blendingMode = .behindWindow // sample the desktop behind the window
+        view.state = .active
+        view.appearance = NSAppearance(named: .aqua) // stay light even in Dark mode
+        return view
+    }
+
+    func updateNSView(_ nsView: NSVisualEffectView, context: Context) {
+        // The host window is opaque by default; clear it so behind-window
+        // blending actually shows through.
+        if let window = nsView.window {
+            window.isOpaque = false
+            window.backgroundColor = .clear
         }
     }
 }
