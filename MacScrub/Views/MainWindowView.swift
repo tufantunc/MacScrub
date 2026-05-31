@@ -161,6 +161,7 @@ struct MainWindowView: View {
                 Text(String(localized: "settings.exit_on_lid_open", defaultValue: "Exit on Lid Open"))
                     .font(.system(size: 13.5, weight: .medium))
                     .foregroundStyle(MSColor.label)
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
             .tint(MSColor.teal)
             .padding(13)
@@ -204,6 +205,7 @@ struct MainWindowView: View {
             Text(exitKeysHint)
                 .font(.system(size: 11))
                 .foregroundStyle(MSColor.tertiary)
+                .fixedSize(horizontal: false, vertical: true)
         }
     }
 
