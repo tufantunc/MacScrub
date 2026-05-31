@@ -49,6 +49,7 @@ struct MacScrubApp: App {
     @State private var lidMonitor: LidMonitor
     @State private var manager: CleaningModeManager
     @State private var nav: HubNavigation
+    @State private var updateChecker: UpdateChecker
     private let overlayController = OverlayWindowController()
 
     init() {
@@ -61,19 +62,24 @@ struct MacScrubApp: App {
             lidMonitor: lidMonitor
         )
         let nav = HubNavigation()
+        let updateChecker = UpdateChecker()
         self._settings = State(initialValue: settings)
         self._eventBlocker = State(initialValue: eventBlocker)
         self._lidMonitor = State(initialValue: lidMonitor)
         self._manager = State(initialValue: manager)
         self._nav = State(initialValue: nav)
+        self._updateChecker = State(initialValue: updateChecker)
     }
 
     var body: some Scene {
         Window("MacScrub", id: "main") {
-            MainWindowView(manager: manager, settings: settings, nav: nav)
+            MainWindowView(manager: manager, settings: settings, nav: nav, updateChecker: updateChecker)
                 .onAppear {
                     manager.overlayController = overlayController
                     NSApp.activate(ignoringOtherApps: true)
+                }
+                .task {
+                    await updateChecker.checkForUpdate()
                 }
         }
         .windowResizability(.contentSize)
