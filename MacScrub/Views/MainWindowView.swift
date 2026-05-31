@@ -16,6 +16,10 @@ struct MainWindowView: View {
             }
         }
         .frame(width: 392)
+        // Light, translucent frosted panel (matches the mockup). The window's own
+        // backing is dark in macOS Dark mode, so without this fill the forced-light
+        // dark text would sit on a dark surface and be unreadable.
+        .background(.regularMaterial)
         .environment(\.colorScheme, .light)
         .alert(
             String(localized: "language.restart_title", defaultValue: "Restart Required"),
