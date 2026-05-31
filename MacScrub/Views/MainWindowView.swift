@@ -54,12 +54,8 @@ struct MainWindowView: View {
 
             Button(action: startCleaning) {
                 Text(String(localized: "menu.start_cleaning", defaultValue: "Start Cleaning Mode"))
-                    .font(.system(size: 15, weight: .semibold))
-                    .frame(maxWidth: .infinity)
             }
-            .controlSize(.large)
-            .buttonStyle(.borderedProminent)
-            .tint(MSColor.teal)
+            .buttonStyle(PrimaryGradientButtonStyle())
             .padding(.horizontal, 34)
             .padding(.top, 22)
 
@@ -256,6 +252,31 @@ struct MainWindowView: View {
         } else {
             PermissionGuideView.showIfNeeded()
         }
+    }
+}
+
+/// Primary action button matching the mockup's `.btn-primary`: a vertical
+/// teal→tealStrong gradient with a glossy top edge and a soft teal glow.
+private struct PrimaryGradientButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .font(.system(size: 15, weight: .semibold))
+            .foregroundStyle(.white)
+            .frame(maxWidth: .infinity)
+            .frame(height: 40)
+            .background(
+                RoundedRectangle(cornerRadius: 9, style: .continuous)
+                    .fill(LinearGradient(colors: [MSColor.teal, MSColor.tealStrong],
+                                         startPoint: .top, endPoint: .bottom))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 9, style: .continuous)
+                            .strokeBorder(Color.white.opacity(0.3), lineWidth: 0.5)
+                    )
+                    .shadow(color: MSColor.tealGlow, radius: 8, y: 4)
+            )
+            .opacity(configuration.isPressed ? 0.85 : 1)
+            .scaleEffect(configuration.isPressed ? 0.99 : 1)
+            .animation(.easeOut(duration: 0.12), value: configuration.isPressed)
     }
 }
 
