@@ -52,6 +52,7 @@ jobs:
             -project MacScrub.xcodeproj \
             -scheme MacScrub \
             -archivePath build/MacScrub.xcarchive \
+            MARKETING_VERSION="${GITHUB_REF_NAME#v}" \
             CODE_SIGN_IDENTITY="-" \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO

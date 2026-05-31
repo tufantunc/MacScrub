@@ -8,6 +8,7 @@ options:
 
 settings:
   base:
+    MARKETING_VERSION: "1.0.0"
     SWIFT_VERSION: "5.9"
     MACOSX_DEPLOYMENT_TARGET: "14.0"
     # Sign with a stable Apple Development identity (not ad-hoc "-") so the
@@ -37,6 +38,9 @@ targets:
         # Run as a menu-bar accessory: no Dock icon. The main window is still
         # shown on launch (the app activates itself via NSApp.activate).
         LSUIElement: true
+        # Keep the short version tied to the MARKETING_VERSION build setting so
+        # the value matches the published git tag at build time.
+        CFBundleShortVersionString: $(MARKETING_VERSION)
 
   MacScrubTests:
     type: bundle.unit-test
