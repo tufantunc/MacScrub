@@ -6,6 +6,7 @@ struct MainWindowView: View {
     @Bindable var manager: CleaningModeManager
     @Bindable var settings: SettingsStore
     @Bindable var nav: HubNavigation
+    @Bindable var updateChecker: UpdateChecker
 
     @State private var showRestartAlert = false
 
@@ -81,8 +82,36 @@ struct MainWindowView: View {
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 34)
                 .padding(.top, 16)
-                .padding(.bottom, 30)
+
+            if let update = updateChecker.availableUpdate {
+                updateBanner(update)
+                    .padding(.horizontal, 34)
+                    .padding(.top, 16)
+            }
+
+            Spacer(minLength: 0)
+                .frame(height: 30)
         }
+    }
+
+    private func updateBanner(_ update: UpdateInfo) -> some View {
+        Button {
+            NSWorkspace.shared.open(update.pageURL)
+        } label: {
+            HStack(spacing: 6) {
+                Image(systemName: "arrow.down.circle.fill")
+                Text(String(format: String(localized: "update.available",
+                                            defaultValue: "New version available (%@)"), update.version))
+                Image(systemName: "chevron.right").font(.system(size: 10, weight: .semibold))
+            }
+            .font(.system(size: 12, weight: .medium))
+            .foregroundStyle(MSColor.tealDeep)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 8)
+            .background(MSColor.tealTint, in: RoundedRectangle(cornerRadius: 8))
+            .contentShape(RoundedRectangle(cornerRadius: 8))
+        }
+        .buttonStyle(.plain)
     }
 
     private var appIcon: some View {

@@ -1,13 +1,23 @@
 import SwiftUI
+import AppKit
 import ApplicationServices
 
 struct MenuBarView: View {
     @Bindable var manager: CleaningModeManager
     @Bindable var settings: SettingsStore
     @Bindable var nav: HubNavigation
+    @Bindable var updateChecker: UpdateChecker
     @Environment(\.openWindow) private var openWindow
 
     var body: some View {
+        if let update = updateChecker.availableUpdate {
+            Button(String(format: String(localized: "update.available",
+                                         defaultValue: "New version available (%@)"), update.version)) {
+                NSWorkspace.shared.open(update.pageURL)
+            }
+            Divider()
+        }
+
         Section(manager.isActive
                 ? String(localized: "menu.status_cleaning", defaultValue: "Cleaning…")
                 : String(localized: "menu.status_ready", defaultValue: "MacScrub · Ready")) {
