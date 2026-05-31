@@ -59,15 +59,18 @@ struct MainWindowView: View {
             .padding(.horizontal, 34)
             .padding(.top, 22)
 
-            Button(String(localized: "menu.settings", defaultValue: "Preferences…")) {
+            Button {
                 nav.view = .preferences
+            } label: {
+                Text(String(localized: "menu.settings", defaultValue: "Preferences…"))
+                    .font(.system(size: 13.5, weight: .medium))
+                    .foregroundStyle(MSColor.label)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 9)
+                    .background(Color.black.opacity(0.045), in: RoundedRectangle(cornerRadius: 8))
+                    .contentShape(RoundedRectangle(cornerRadius: 8))
             }
             .buttonStyle(.plain)
-            .font(.system(size: 13.5, weight: .medium))
-            .foregroundStyle(MSColor.label)
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 9)
-            .background(Color.black.opacity(0.045), in: RoundedRectangle(cornerRadius: 8))
             .padding(.horizontal, 34)
             .padding(.top, 10)
 
