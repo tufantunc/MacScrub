@@ -66,11 +66,16 @@ jobs:
 
       - name: Create DMG
         run: |
-          DMG_NAME="MacScrub-${{ github.ref_name }}.dmg"
-          hdiutil create -volname "MacScrub" \
-            -srcfolder build/export/MacScrub.app \
-            -ov -format UDZO \
-            "$DMG_NAME"
+          brew install create-dmg
+          create-dmg \
+            --volname "MacScrub" \
+            --window-size 560 360 \
+            --icon-size 96 \
+            --icon "MacScrub.app" 150 180 \
+            --app-drop-link 410 180 \
+            --no-internet-enable \
+            "MacScrub-${GITHUB_REF_NAME}.dmg" \
+            "build/export/MacScrub.app"
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
