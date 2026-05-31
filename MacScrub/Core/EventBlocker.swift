@@ -12,20 +12,20 @@ final class EventBlocker: EventBlockerProtocol {
     func start() -> Bool {
         guard !isBlocking else { return true }
 
-        let eventMask: CGEventMask = (
-            (1 << CGEventType.keyDown.rawValue) |
-            (1 << CGEventType.keyUp.rawValue) |
-            (1 << CGEventType.leftMouseDown.rawValue) |
-            (1 << CGEventType.leftMouseUp.rawValue) |
-            (1 << CGEventType.rightMouseDown.rawValue) |
-            (1 << CGEventType.rightMouseUp.rawValue) |
-            (1 << CGEventType.leftMouseDragged.rawValue) |
-            (1 << CGEventType.rightMouseDragged.rawValue) |
-            (1 << CGEventType.otherMouseDown.rawValue) |
-            (1 << CGEventType.otherMouseUp.rawValue) |
-            (1 << CGEventType.scrollWheel.rawValue) |
-            (1 << CGEventType.flagsChanged.rawValue)
-        )
+        // Built via an explicitly-typed reduce: the equivalent single OR-chain
+        // expression trips the Swift type-checker's "too complex" timeout in
+        // optimized (Release/archive) builds.
+        let blockedEventTypes: [CGEventType] = [
+            .keyDown, .keyUp,
+            .leftMouseDown, .leftMouseUp,
+            .rightMouseDown, .rightMouseUp,
+            .leftMouseDragged, .rightMouseDragged,
+            .otherMouseDown, .otherMouseUp,
+            .scrollWheel, .flagsChanged,
+        ]
+        let eventMask: CGEventMask = blockedEventTypes.reduce(into: CGEventMask(0)) { mask, type in
+            mask |= CGEventMask(1) << CGEventMask(type.rawValue)
+        }
 
         guard let tap = CGEvent.tapCreate(
             tap: .cghidEventTap,
