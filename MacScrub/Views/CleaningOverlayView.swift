@@ -2,7 +2,6 @@ import SwiftUI
 
 struct CleaningOverlayView: View {
     var manager: CleaningModeManager
-    @State private var breathing = false
     @State private var pulsing = false
     @State private var showContent = false
 
@@ -32,7 +31,6 @@ struct CleaningOverlayView: View {
         .animation(.spring(response: 0.5, dampingFraction: 0.85), value: manager.isActive)
         .onAppear {
             withAnimation { showContent = true }
-            breathing = true
             pulsing = true
         }
         .onChange(of: manager.isActive) { _, newValue in
@@ -87,24 +85,40 @@ struct CleaningOverlayView: View {
     private var ring: some View {
         Group {
             if manager.modifierDetector.holdStartDate != nil {
+                // Holding the exit keys → hold-to-exit progress.
                 TimelineView(.animation) { context in
                     ringContent(
                         progress: holdProgress(at: context.date),
-                        remaining: holdRemainingText(
+                        number: holdRemainingText(
                             holdStartDate: manager.modifierDetector.holdStartDate,
                             now: context.date,
                             duration: manager.modifierDetector.holdDuration
-                        )
+                        ),
+                        unit: "SEC"
                     )
                 }
             } else {
-                ringContent(progress: 0, remaining: nil)
+                // Idle → auto-terminate countdown (fills as the deadline nears).
+                TimelineView(.periodic(from: .now, by: 1)) { context in
+                    ringContent(
+                        progress: autoExitProgress(
+                            deadline: manager.idleExitDeadline,
+                            now: context.date,
+                            total: TimeInterval(manager.settings.timeoutDuration)
+                        ),
+                        number: autoExitRemainingText(
+                            deadline: manager.idleExitDeadline,
+                            now: context.date
+                        ),
+                        unit: String(localized: "overlay.auto_exit", defaultValue: "Auto-exit")
+                    )
+                }
             }
         }
         .frame(width: 132, height: 132)
     }
 
-    private func ringContent(progress: Double, remaining: String?) -> some View {
+    private func ringContent(progress: Double, number: String, unit: String) -> some View {
         ZStack {
             Circle()
                 .stroke(Color.black.opacity(0.07), lineWidth: 6)
@@ -113,24 +127,21 @@ struct CleaningOverlayView: View {
                 .stroke(MSColor.teal, style: StrokeStyle(lineWidth: 6, lineCap: .round))
                 .rotationEffect(.degrees(-90))
 
-            if let remaining {
-                VStack(spacing: 1) {
-                    Text(remaining)
-                        .font(.system(size: 40, weight: .semibold))
-                        .monospacedDigit()
-                        .foregroundStyle(MSColor.tealDeep)
-                    Text("SEC")
-                        .font(.system(size: 10, weight: .bold))
-                        .tracking(2)
-                        .foregroundStyle(MSColor.tertiary)
-                }
-            } else {
-                Image(systemName: "sparkles")
-                    .font(.system(size: 46))
-                    .foregroundStyle(MSColor.tealStrong)
-                    .scaleEffect(breathing ? 1.05 : 1.0)
-                    .animation(.easeInOut(duration: 2.0).repeatForever(autoreverses: true), value: breathing)
+            VStack(spacing: 1) {
+                Text(number)
+                    .font(.system(size: 34, weight: .semibold))
+                    .monospacedDigit()
+                    .foregroundStyle(MSColor.tealDeep)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.6)
+                Text(unit.uppercased())
+                    .font(.system(size: 10, weight: .bold))
+                    .tracking(2)
+                    .foregroundStyle(MSColor.tertiary)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.6)
             }
+            .padding(.horizontal, 10)
         }
     }
 

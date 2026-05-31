@@ -21,3 +21,18 @@ func holdRemainingText(holdStartDate: Date?, now: Date, duration: TimeInterval) 
     let remaining = max(0, duration - now.timeIntervalSince(start))
     return String(format: "%.1f", remaining)
 }
+
+/// Time left before the idle auto-terminate fires, formatted as `M:SS`
+/// (e.g. "2:00"). Clamped at "0:00". Pure and unit-tested.
+func autoExitRemainingText(deadline: Date, now: Date) -> String {
+    let remaining = max(0, Int(deadline.timeIntervalSince(now).rounded(.up)))
+    return String(format: "%d:%02d", remaining / 60, remaining % 60)
+}
+
+/// Fill fraction (0…1) for the idle auto-terminate ring: 0 right after a reset,
+/// approaching 1 as the deadline nears. Pure and unit-tested.
+func autoExitProgress(deadline: Date, now: Date, total: TimeInterval) -> Double {
+    guard total > 0 else { return 0 }
+    let remaining = max(0, deadline.timeIntervalSince(now))
+    return min(1, max(0, 1 - remaining / total))
+}
