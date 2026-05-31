@@ -1,5 +1,10 @@
 # MacScrub
 
+![Platform](https://img.shields.io/badge/platform-macOS%2014%2B-111?logo=apple&logoColor=white)
+![Latest release](https://img.shields.io/github/v/release/tufantunc/MacScrub?color=4FB0BC)
+![Downloads](https://img.shields.io/github/downloads/tufantunc/MacScrub/total?color=4FB0BC)
+![License: MIT](https://img.shields.io/github/license/tufantunc/MacScrub?color=4FB0BC)
+
 A calm macOS menu-bar utility that temporarily blocks keyboard and trackpad input so you can wipe down your Mac without triggering anything.
 
 ![MacScrub — idle window, preferences, menu, and the active cleaning overlay](docs/images/presentation.png)
