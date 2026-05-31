@@ -68,14 +68,15 @@ final class UpdateChecker {
     /// Checks once per process; failures are silent (availableUpdate stays nil).
     func checkForUpdate() async {
         guard !didCheck else { return }
-        didCheck = true
         do {
             let release = try await fetcher.fetchLatestRelease()
+            didCheck = true
             if isVersion(release.tag_name, newerThan: currentVersion) {
                 availableUpdate = UpdateInfo(version: release.tag_name, pageURL: release.html_url)
             }
         } catch {
-            // Silent: no banner on network/decode failure.
+            // Silent on failure/cancellation; didCheck stays false so a later
+            // .task can retry the check.
         }
     }
 }
