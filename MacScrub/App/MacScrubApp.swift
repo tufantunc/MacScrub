@@ -85,7 +85,7 @@ struct MacScrubApp: App {
         .windowResizability(.contentSize)
 
         MenuBarExtra {
-            MenuBarView(manager: manager, settings: settings, nav: nav)
+            MenuBarView(manager: manager, settings: settings, nav: nav, updateChecker: updateChecker)
         } label: {
             Image(systemName: "sparkles")
                 .symbolRenderingMode(.hierarchical)
