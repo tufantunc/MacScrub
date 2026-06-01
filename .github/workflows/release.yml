@@ -12,6 +12,8 @@ permissions:
 jobs:
   build:
     runs-on: macos-15
+    env:
+      TEAM_ID: FA2WUDBFB8
     steps:
       - uses: actions/checkout@v4
 
@@ -22,26 +24,42 @@ jobs:
         with:
           xcode-version: latest-stable
 
-      - name: Install XcodeGen
-        run: brew install xcodegen
+      - name: Install tools
+        run: brew install xcodegen create-dmg
 
       - name: Generate Xcode Project
         run: xcodegen generate
 
+      - name: Import Developer ID certificate
+        env:
+          CERT_P12_BASE64: ${{ secrets.DEVELOPER_ID_CERT_P12_BASE64 }}
+          CERT_PASSWORD: ${{ secrets.DEVELOPER_ID_CERT_PASSWORD }}
+        run: |
+          CERT_PATH="$RUNNER_TEMP/developer_id.p12"
+          KEYCHAIN_PATH="$RUNNER_TEMP/app-signing.keychain-db"
+          KEYCHAIN_PASSWORD="$(uuidgen)"
+          echo "$CERT_P12_BASE64" | openssl base64 -d -A > "$CERT_PATH"
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security import "$CERT_PATH" -P "$CERT_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security list-keychain -d user -s "$KEYCHAIN_PATH" $(security list-keychains -d user | sed s/\"//g)
+          security find-identity -v -p codesigning
+
       - name: Create ExportOptions.plist
         run: |
-          cat > ExportOptions.plist << 'EOF'
+          cat > ExportOptions.plist << EOF
           <?xml version="1.0" encoding="UTF-8"?>
           <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
           <plist version="1.0">
           <dict>
               <key>method</key>
-              <string>mac-application</string>
-              <key>signing</key>
-              <dict>
-                  <key>style</key>
-                  <string>adhoc</string>
-              </dict>
+              <string>developer-id</string>
+              <key>teamID</key>
+              <string>${TEAM_ID}</string>
+              <key>signingStyle</key>
+              <string>manual</string>
           </dict>
           </plist>
           EOF
@@ -53,9 +71,11 @@ jobs:
             -scheme MacScrub \
             -archivePath build/MacScrub.xcarchive \
             MARKETING_VERSION="${GITHUB_REF_NAME#v}" \
-            CODE_SIGN_IDENTITY="-" \
-            CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGNING_ALLOWED=NO
+            CODE_SIGN_STYLE=Manual \
+            CODE_SIGN_IDENTITY="Developer ID Application" \
+            DEVELOPMENT_TEAM="${TEAM_ID}" \
+            ENABLE_HARDENED_RUNTIME=YES \
+            OTHER_CODE_SIGN_FLAGS="--timestamp"
 
       - name: Export App
         run: |
@@ -66,7 +86,6 @@ jobs:
 
       - name: Create DMG
         run: |
-          brew install create-dmg
           create-dmg \
             --volname "MacScrub" \
             --window-size 560 360 \
@@ -76,6 +95,24 @@ jobs:
             --no-internet-enable \
             "MacScrub-${GITHUB_REF_NAME}.dmg" \
             "build/export/MacScrub.app"
+
+      - name: Notarize and staple
+        env:
+          API_KEY_P8_BASE64: ${{ secrets.AC_API_KEY_P8_BASE64 }}
+          API_KEY_ID: ${{ secrets.AC_API_KEY_ID }}
+          API_ISSUER_ID: ${{ secrets.AC_API_ISSUER_ID }}
+        run: |
+          KEY_PATH="$RUNNER_TEMP/ac_api_key.p8"
+          echo "$API_KEY_P8_BASE64" | openssl base64 -d -A > "$KEY_PATH"
+          DMG="MacScrub-${GITHUB_REF_NAME}.dmg"
+          xcrun notarytool submit "$DMG" \
+            --key "$KEY_PATH" \
+            --key-id "$API_KEY_ID" \
+            --issuer "$API_ISSUER_ID" \
+            --wait
+          xcrun stapler staple "$DMG"
+          xcrun stapler validate "$DMG"
+          spctl -a -t open --context context:primary-signature -vv "$DMG" || true
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
