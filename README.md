@@ -92,6 +92,15 @@ MacScrub ships in English, Turkish, and Simplified Chinese, stored in a String C
 
 Want to add your language? See **[docs/ADDING_A_TRANSLATION.md](docs/ADDING_A_TRANSLATION.md)** for a step-by-step guide.
 
+## Privacy & Permissions
+
+MacScrub is built to be trustworthy with the access it asks for:
+
+- **No data collection.** MacScrub has no analytics, no telemetry, and no accounts. Nothing about you or your usage is gathered or stored.
+- **One network request.** The only time MacScrub touches the network is a check against the public GitHub Releases API to see whether a newer version exists. Nothing is uploaded.
+- **Accessibility permission** is used *solely* to temporarily block keyboard and trackpad input while cleaning mode is active. Input events are intercepted locally and never recorded, logged, or transmitted.
+- **Signed & notarized.** Releases are signed with a Developer ID certificate and notarized by Apple, so macOS can verify the app hasn't been tampered with.
+
 ## License
 
 MacScrub is released under the [MIT License](LICENSE).
