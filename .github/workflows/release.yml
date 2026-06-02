@@ -84,6 +84,22 @@ jobs:
             -exportPath build/export \
             -exportOptionsPlist ExportOptions.plist
 
+      - name: Notarize and staple the app
+        env:
+          API_KEY_P8_BASE64: ${{ secrets.AC_API_KEY_P8_BASE64 }}
+          API_KEY_ID: ${{ secrets.AC_API_KEY_ID }}
+          API_ISSUER_ID: ${{ secrets.AC_API_ISSUER_ID }}
+        run: |
+          KEY_PATH="$RUNNER_TEMP/ac_api_key.p8"
+          echo "$API_KEY_P8_BASE64" | openssl base64 -d -A > "$KEY_PATH"
+          ditto -c -k --keepParent "build/export/MacScrub.app" "$RUNNER_TEMP/MacScrub.zip"
+          xcrun notarytool submit "$RUNNER_TEMP/MacScrub.zip" \
+            --key "$KEY_PATH" \
+            --key-id "$API_KEY_ID" \
+            --issuer "$API_ISSUER_ID" \
+            --wait
+          xcrun stapler staple "build/export/MacScrub.app"
+
       - name: Create DMG
         run: |
           create-dmg \
@@ -96,14 +112,19 @@ jobs:
             "MacScrub-${GITHUB_REF_NAME}.dmg" \
             "build/export/MacScrub.app"
 
-      - name: Notarize and staple
+      - name: Sign DMG
+        run: |
+          codesign --force --timestamp \
+            --sign "Developer ID Application" \
+            "MacScrub-${GITHUB_REF_NAME}.dmg"
+          codesign -dvv "MacScrub-${GITHUB_REF_NAME}.dmg" 2>&1 | grep -i "Authority=Developer ID" || true
+
+      - name: Notarize and staple the DMG
         env:
-          API_KEY_P8_BASE64: ${{ secrets.AC_API_KEY_P8_BASE64 }}
           API_KEY_ID: ${{ secrets.AC_API_KEY_ID }}
           API_ISSUER_ID: ${{ secrets.AC_API_ISSUER_ID }}
         run: |
           KEY_PATH="$RUNNER_TEMP/ac_api_key.p8"
-          echo "$API_KEY_P8_BASE64" | openssl base64 -d -A > "$KEY_PATH"
           DMG="MacScrub-${GITHUB_REF_NAME}.dmg"
           xcrun notarytool submit "$DMG" \
             --key "$KEY_PATH" \
