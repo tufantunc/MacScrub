@@ -33,6 +33,12 @@ A calm macOS menu-bar utility that temporarily blocks keyboard and trackpad inpu
 brew install --cask tufantunc/tap/macscrub
 ```
 
+To update later, refresh the tap first, then upgrade:
+
+```bash
+brew update && brew upgrade --cask macscrub
+```
+
 ### Direct download
 
 Download the latest DMG from [Releases](../../releases), drag **MacScrub** to your Applications folder, and open it.
