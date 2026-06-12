@@ -27,9 +27,15 @@ A calm macOS menu-bar utility that temporarily blocks keyboard and trackpad inpu
 
 ## Installation
 
-Download the latest DMG from [Releases](../../releases), drag **MacScrub** to your Applications folder, and open it.
+### Homebrew
 
-On first launch you may need to right-click → **Open** to bypass Gatekeeper.
+```bash
+brew install --cask tufantunc/tap/macscrub
+```
+
+### Direct download
+
+Download the latest DMG from [Releases](../../releases), drag **MacScrub** to your Applications folder, and open it.
 
 ## Usage
 
