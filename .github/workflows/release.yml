@@ -140,3 +140,44 @@ jobs:
         with:
           files: "*.dmg"
           generate_release_notes: true
+
+      # Push the updated cask to the maintainer's tap so `brew upgrade` picks up
+      # the new release. Runs last: if the token is missing/expired this fails
+      # loudly, but the DMG + GitHub Release have already published above.
+      - name: Update Homebrew tap
+        env:
+          TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+        run: |
+          set -euo pipefail
+          VERSION="${GITHUB_REF_NAME#v}"
+          DMG="MacScrub-${GITHUB_REF_NAME}.dmg"
+          SHA="$(shasum -a 256 "$DMG" | awk '{print $1}')"
+          git clone "https://x-access-token:${TAP_TOKEN}@github.com/tufantunc/homebrew-tap.git" tap
+          mkdir -p tap/Casks
+          cat > tap/Casks/macscrub.rb << EOF
+          cask "macscrub" do
+            version "${VERSION}"
+            sha256 "${SHA}"
+
+            url "https://github.com/tufantunc/MacScrub/releases/download/v#{version}/MacScrub-v#{version}.dmg"
+            name "MacScrub"
+            desc "Temporary input lock for safely cleaning your keyboard and trackpad"
+            homepage "https://github.com/tufantunc/MacScrub"
+
+            depends_on macos: :sonoma
+
+            app "MacScrub.app"
+
+            zap trash: [
+              "~/Library/Caches/com.macscrub.app",
+              "~/Library/Preferences/com.macscrub.app.plist",
+              "~/Library/Saved Application State/com.macscrub.app.savedState",
+            ]
+          end
+          EOF
+          cd tap
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Casks/macscrub.rb
+          git commit -m "macscrub ${VERSION}" || echo "no change"
+          git push origin HEAD
